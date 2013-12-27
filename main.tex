@@ -1,0 +1,216 @@
+\documentclass[11pt,letterpaper,final]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[bookmarks=true, colorlinks=true]{hyperref}
+% Graphics
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
+\pdfcompresslevel=9
+
+\raggedright
+
+% Front matter
+\author{Joel Vincent Bernier}
+\title{A general geometric model for casting diffraction}
+
+% some macros
+\newcommand{\mbm}[1]{\ensuremath{\mbox{\boldmath$#1$}}}
+
+\newcommand{\tvecd}{\ensuremath{\vec{\mbm{\mathrm{t}}}_d}}
+\newcommand{\tvecs}{\ensuremath{\vec{\mbm{\mathrm{t}}}_s}}
+\newcommand{\tvecc}{\ensuremath{\vec{\mbm{\mathrm{t}}}_c}}
+\newcommand{\rmatd}{\ensuremath{\mathsf{R}_d}}
+\newcommand{\rmats}{\ensuremath{\mathsf{R}_s}}
+\newcommand{\rmatc}{\ensuremath{\mathsf{R}_c}}
+\newcommand{\bmat}{\ensuremath{\mathsf{B}}}
+\newcommand{\gvec}{\ensuremath{\vec{\mbm{\mathrm{G}}}_{hkl}}}
+\newcommand{\ghat}{\ensuremath{\hat{\mbm{\mathrm{G}}}_{hkl}}}
+\newcommand{\bhat}{\ensuremath{\hat{\mbm{\mathrm{b}}}}}
+\newcommand{\dhat}{\ensuremath{\hat{\mbm{\mathrm{d}}}_{hkl}}}
+\newcommand{\ehat}{\ensuremath{\hat{\mbm{\mathrm{e}}}}}
+\newcommand{\eye}{\ensuremath{\mbm{\mathrm{I}}}}
+\newcommand{\vmat}{\ensuremath{\mbm{\mathrm{V}}}}
+\newcommand{\defgrad}{\ensuremath{\mbm{\mathrm{F}}}}
+
+% points
+\newcommand{\Pzero}{ \ensuremath{\mathrm{P0}}}
+\newcommand{\Pone}{  \ensuremath{\mathrm{P1}}}
+\newcommand{\Ptwo}{  \ensuremath{\mathrm{P2}}}
+\newcommand{\Pthree}{\ensuremath{\mathrm{P3}}}
+\newcommand{\Pfour}{ \ensuremath{\mathrm{P4}}}
+
+% coordinate axes
+\newcommand{\Xl}{\ensuremath{\hat{\mbm{\mathrm{X}}}_l}}
+\newcommand{\Yl}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_l}}
+\newcommand{\Zl}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_l}}
+\newcommand{\labframe}{\ensuremath{\left\{\Xl\Yl\Zl\right\}}}
+
+\newcommand{\Xd}{\ensuremath{\hat{\mbm{\mathrm{X}}}_d}}
+\newcommand{\Yd}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_d}}
+\newcommand{\Zd}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_d}}
+\newcommand{\detframe}{\ensuremath{\left\{\Xd\Yd\Zd\right\}}}
+
+\newcommand{\Xs}{\ensuremath{\hat{\mbm{\mathrm{X}}}_s}}
+\newcommand{\Ys}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_s}}
+\newcommand{\Zs}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_s}}
+\newcommand{\samframe}{\ensuremath{\left\{\Xs\Ys\Zs\right\}}}
+
+\newcommand{\Xc}{\ensuremath{\hat{\mbm{\mathrm{X}}}_c}}
+\newcommand{\Yc}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_c}}
+\newcommand{\Zc}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_c}}
+\newcommand{\xtlframe}{\ensuremath{\left\{\Xc\Yc\Zc\right\}}}
+
+% vector components
+\newcommand{\labcomps}[1]{\left[#1\right]_l}
+\newcommand{\detcomps}[1]{\left[#1\right]_d}
+\newcommand{\samcomps}[1]{\left[#1\right]_s}
+\newcommand{\xtlcomps}[1]{\left[#1\right]_c}
+
+% cross-references
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+
+% miscellaneous
+\newcommand{\ie}{{\em i.e.}}
+\newcommand{\eg}{{\em e.g.}}
+\newcommand{\cf}{{\em cf.}}
+
+\newcommand{\gx}{\ensuremath{\gamma_x}}
+\newcommand{\gy}{\ensuremath{\gamma_y}}
+\newcommand{\gz}{\ensuremath{\gamma_z}}
+
+\newcommand{\crysdir}{\ensuremath{\mathbf{h}}}
+\newcommand{\sampdir}{\ensuremath{\mathbf{s}}}
+\newcommand{\hkls}{\ensuremath{hkl}}
+\newcommand{\bhkls}{\ensuremath{\bar{h}\bar{k}\bar{l}}}
+
+% MATH OPERATORS
+\newcommand{\dotp}[2]{\ensuremath{#1\cdot#2}}
+\newcommand{\crossp}[2]{\ensuremath{#1\times#2}}
+\newcommand{\modulus}[2]{\mathop{\mathrm{mod}\left(\frac{#1}{#2}\right)}}
+\newcommand{\skewMat}[1]{\ensuremath{
+	\left[
+		\begin{array}{rrr}
+			    0 & -#1_2 &  #1_1 \;\\ 
+			 #1_2 &     0 & -#1_0 \;\\
+			-#1_1 &  #1_0 &     0 \;
+		\end{array}
+	\right]}}
+
+\newcommand{\skewOp}[1]{\ensuremath{\mathrm{skew}\;#1}}
+
+\newcommand{\symmMat}[1]{\ensuremath{
+	\left[
+		\begin{array}{ccc}
+			#1_0 & #1_5 & #1_4 \\ 
+			     & #1_1 & #1_3 \\
+			\multicolumn{2}{l}{\text{\smash{\raisebox{0.35ex}{\;Sym.}}}} & #1_2 \\
+		\end{array}
+	\right]}}
+
+\newcommand{\outerProdMat}[1]{\ensuremath{
+	\left[
+		\begin{array}{rrr}
+			#1_0^2 & #1_0#1_1 & #1_0#1_2 \\ 
+			       &   #1_1^2 & #1_1#1_2 \\
+			\multicolumn{2}{l}{\text{\smash{\raisebox{0.35ex}{\;\;Sym.}}}} & #1_2^2 \\
+		\end{array}
+	\right]}}
+
+\newcommand{\EyeMinusOuterProdMat}[1]{\ensuremath{
+	\left[
+		\begin{array}{rrr}
+			1 - #1_0^2 &  -#1_0#1_1 & -#1_0#1_2 \\ 
+			           & 1 - #1_1^2 & -#1_1#1_2 \\
+			\multicolumn{2}{l}{\text{\smash{\raisebox{0.35ex}{\;\;Sym.}}}} & 1 - #1_2^2 \\
+		\end{array}
+	\right]}}
+
+% --------------------- Document ---------------------
+\begin{document}
+\maketitle
+\begin{abstract}
+A complete and general geometric model for describing diffraction
+measurements is presented.  It includes provisions for describing both
+mono- and poly-chromatic schemas for {\em collimated} incident beams
+(\ie\ negligable beam divergence).  Detectors are modeled as planar
+bodies, and their shapes and placements in the reference frame are
+completely arbitrary.  The mapping that takes an admissable reciprocal
+lattice vector in the crystal frame to pixel coordinates in a given
+detector frame is of the form $\mathbf{A}(\mathbf{x})\cdot\mathbf{x} =
+\mathbf{y}$.  The application of focus in this note is the rotation
+method; this implies a monochromatic incident beam and a sample frame
+that rotates about an axis that is nominally perpendicular to the
+incident beam.
+\end{abstract}
+
+A single-detector diffraction measurement schema is illustrated in
+\figref{F:diffraction_schema}.  For genearlity we utilize four
+fundamental coordinate systems:
+\begin{itemize}
+  \item the {\bf laboratory} frame, \labframe;
+  \item the {\bf detector} frame(s), $\detframe_i$;
+  \item the {\bf sample} frame, \samframe; and
+  \item the {\bf crystal} frame, \xtlframe.
+\end{itemize}
+The laboratory frame is intended to provide a global reference frame
+that is stationary during the measurement.  The incident beam has a
+non-neglible physical extent in the lab frame, typically possessing a
+rectangular or circular cross-section; the beam direction is
+represented by the unit vector \bhat.  The centroid of the incident
+beam cross-section can be considered to coincide with the origin of
+\labframe\, \Pzero.
+%
+A typical detector element has a planar active area with a rectangular shape.  A complete instrument may contain several independent detectors with unique orientations and placements in the lab frame.  A cartesian coordinate system \detframe\ is attached to each independent element as follows: the origin \Pone\ is coincident with the centroid of the active surface with \Zd\ representing the normal.  The \Xd,\Yd\ directions are typically aligned with the horizontal and vertical pixel-relative directions on each panel.  Vector components in each independent detector coordinate system, \detframe\, are related to components in \labframe\ via a simple affine transformation:
+\begin{equation}
+  \labcomps{\vec{\mbm{x}}} = \rmatd\cdot\detcomps{\vec{\mbm{x}}} + \labcomps{\tvecd}
+\end{equation}
+where the notation $\labcomps{\vec{\mbm{\xi}}}$ indicates the components of $\vec{\mbm{\xi}}$ in \labframe.  
+%
+sample frame provides a basis in which to represent a uniquely oriented and located specimen.  The basis vectors \samframe\ are connected to \labframe\ via a simple affine transformation, In the case of the rotation method, this is the oscillation frame.  Without loss of generality, the oscillation axis, is fixed to \Ys.  It may be canted with respect to \Yl\ by the angle $\chi$\footnote{the canting angle $\chi$ is typically very small for an HEDM schema, although some special cases might require it to be set to some non-zero value.  Including this degree of freedom in the model also allows for it to be quantified via calibration.}.  The oscillation angle itself is represented by $\omega$.  The full model has a sufficient number of degrees of freedom to preclude the need for a third rotational degree of freedom for \samframe.
+
+\begin{figure}[hb]
+  \centering
+  \includegraphics[width=\textwidth]{new_geometry.pdf}
+  \caption{A single-detector diffraction schema illustrating.}
+  \label{F:diffraction_schema}
+\end{figure}
+
+\begin{gather}
+\Zd \cdot (\Pfour - \Pone) = 0 \\
+\Pfour = \Pthree + u\dhat
+\end{gather}
+
+\begin{align}
+\Pone   &= \tvecd \\
+\Ptwo   &= \tvecs \\
+\Pthree &= \rmats\tvecc + \tvecs \\
+\Pfour  &= \rmatd\mbm{\xi}_{d} + \tvecd \\
+\end{align}
+
+\begin{align}
+\detcomps{\Pfour} &= \begin{bmatrix}x&y&0\end{bmatrix} \\
+                  &=\rmatd^T\cdot\detcomps{ \rmats\tvecc+\tvecs-\tvecd 
+    - \frac{\left(\rmatd\Zl\right)\cdot\left(\rmats\tvecc+\tvecs-\tvecd\right)}
+           {\left(\rmatd\Zl\right)\cdot\dhat}\cdot\dhat } 
+\end{align}
+
+\begin{align}
+\dhat &= \mathsf{R}\left(\pi, \ghat\right)\cdot\left(-\bhat\right) \\
+      &= \left(2\ghat\otimes\ghat - \eye\right)\cdot\left(-\bhat\right) \\
+      &= \left(\eye - 2\ghat\otimes\ghat\right)\cdot\bhat \\
+      & \mbox{where: } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\|,  \\
+      & \mbox{and } \dhat\cdot\Zd < 0 \\ 
+\labcomps{\gvec} &= \rmats \samcomps{\gvec} \\
+                 &= \rmats \defgrad^{-T} \xtlcomps{\gvec} \\
+                 &= \rmats \defgrad^{-T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \\
+                 &= \rmats \vmat^{-1} \rmatc^{T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \\\end{align}
+
+\begin{equation}
+  \left(\eye - \bhat \otimes \bhat\right)\cdot\dhat
+\end{equation}
+
+\end{document}
+
