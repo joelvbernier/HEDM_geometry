@@ -21,12 +21,12 @@ rMat_b = np.dot(rot.rotMatOfExpMap(d2r * chi_b * Xl),
 bVec   = np.dot(rMat_b, -Zl)
 beam_len = 10
 
-tVec_d = np.c_[ -5.,   3., -10.].T
-tVec_s = np.c_[  2.,   0., -1.5].T
-tVec_c = np.c_[  2.,   1.,  -1.].T
+tVec_d = np.c_[ -5.0,   3.0, -10.0].T
+tVec_s = np.c_[  3.0,   0.2,  -1.5].T
+tVec_c = np.c_[  2.0,   0.8,  -0.7].T
 
 
-rMat_d = rot.rotMatOfExpMap(d2r*7*np.c_[3, 0, 1].T)
+rMat_d = rot.rotMatOfExpMap(d2r*21*mutil.unitVector(np.c_[2, 3, 1].T))
 
 chi = 21 * d2r
 ome = 67 * d2r
@@ -35,7 +35,7 @@ rMat_s = np.dot(rot.rotMatOfExpMap(chi * Xl),
 
 rMat_c = rot.rotMatOfExpMap(d2r*36*mutil.unitVector(np.c_[1, 2, 3].T))
 
-det_size = (6, 3.5)
+det_size = (6, 4)
 det_pt   = (-1.15, 0.875)
 
 def gen_sk(fname, det_size, det_pt, eVec,
@@ -76,6 +76,8 @@ def gen_sk(fname, det_size, det_pt, eVec,
     eye_vec  = np.r_[15, 5, 10]
     look_vec = np.r_[0, 0, -7]
 
+    axwgt_pt = 1.5
+    
     """
     -------------------------------------------------
     PRINT THAT SHIT
@@ -103,16 +105,19 @@ def gen_sk(fname, det_size, det_pt, eVec,
     print >> fid, '\n% detector'
     print >> fid, 'def tvec_d [%f, %f, %f]' % tuple(tVec_d.flatten())
     print >> fid, 'def tpt_d  (%f, %f, %f)' % tuple(tVec_d.flatten())
-    
+    print >> fid, 'def tpt_d_label  (%f, %f, %f)' % tuple(0.5*tVec_d.flatten())
+        
     print >> fid, '\n% sample'
     print >> fid, 'def tvec_s [%f, %f, %f]' % tuple(tVec_s.flatten())
     print >> fid, 'def tpt_s  (%f, %f, %f)' % tuple(tVec_s.flatten())
+    print >> fid, 'def tpt_s_label (%f, %f, %f)' % tuple(0.5*tVec_s.flatten())
     print >> fid, 'def chi    %f' % (r2d*chi)
     print >> fid, 'def ome    %f' % (r2d*ome)
     
     print >> fid, '\n% crystal'
     print >> fid, 'def tvec_c [%f, %f, %f]' % tuple(tVec_c_rot)
     print >> fid, 'def tpt_c  (%f, %f, %f)' % tuple(tVec_c_l)
+    print >> fid, 'def tpt_c_label (%f, %f, %f)' % tuple(0.5*(tVec_c_l.flatten() + tVec_s.flatten()))
     print >> fid, 'def tvec_c_l [%f, %f, %f]' % tuple(tVec_c_l)
     print >> fid, 'def tthvec [%f, %f, %f]' % tuple(tTh_vec)
     print >> fid, 'def tth %f' % (tTh)
@@ -123,7 +128,7 @@ def gen_sk(fname, det_size, det_pt, eVec,
     print >> fid, 'def chi_label (%f, %f, %f)' % tuple(tVec_s.flatten() + np.r_[0, 1, 0.3])
     print >> fid, 'def ome_label (%f, %f, %f)' % tuple(tVec_s.flatten() + 0.6*np.r_[1, 0, -1])
     print >> fid, 'def axlen 1.5'
-    
+
     print >> fid, 'def det_ang  %f' % (r2d*phi_d)
     print >> fid, 'def det_axis [%f, %f, %f]' % tuple(n_d)
     print >> fid, 'def det_size_x %f'% (det_size[0])
@@ -138,18 +143,18 @@ def gen_sk(fname, det_size, det_pt, eVec,
     print >> fid, '\n% the lab frame'
     print >> fid, \
         'def lab_frame {                                                   \n' + \
-        '    line [linewidth=1.2pt,arrows=->]  (p1)(axlen,0,0)             \n' + \
-        '    line [linewidth=1.2pt,arrows=->]  (p1)(0,axlen,0)             \n' + \
-        '    line [linewidth=1.2pt,arrows=->]  (p1)(0,0,axlen)             \n' + \
+        '    line [linewidth=%fpt,arrows=->]  (p1)(axlen,0,0)              \n' % (axwgt_pt) + \
+        '    line [linewidth=%fpt,arrows=->]  (p1)(0,axlen,0)              \n' % (axwgt_pt) + \
+        '    line [linewidth=%fpt,arrows=->]  (p1)(0,0,axlen)              \n' % (axwgt_pt) + \
         '    line [arrows=->,linecolor=cyan, lay=over]  (p1)(evp)          \n' + \
         '    line [arrows=->,linecolor=magenta]  (p1)(bvp)                 \n' + \
-        '    special |\uput[d]#1{$\mathrm{X}_l$}                           \n' + \
-        '             \uput[u]#2{$\mathrm{Y}_l$}                           \n' + \
-        '             \uput[u]#3{$\mathrm{Z}_l$}                           \n' + \
-        '             \uput[dl]#4{$\hat{e}$}                               \n' + \
-        '             \uput[u]#5{$\hat{b}$}                                \n' + \
-        '             \uput[d]#6{$\mathrm{P}_0$}|                          \n' + \
-        '        (axlen,0,0)(0,axlen,0)(0,0,axlen)(1,0,0)(0,0,-1)(p1)      \n' + \
+        '    special |\uput[d ]#1{$\hat{\mathbf{X}}_l$}                    \n' + \
+        '             \uput[u ]#2{$\hat{\mathbf{Y}}_l$}                    \n' + \
+        '             \uput[u ]#3{$\hat{\mathbf{Z}}_l$}                    \n' + \
+        '             \uput[dl]#4{$\hat{\mathbf{e}}$}                      \n' + \
+        '             \uput[u ]#5{$\hat{\mathbf{b}}$}                      \n' + \
+        '             \uput[d ]#6{$\mathrm{P}_0$}|                         \n' + \
+        '        (axlen,0,0)(0,axlen,0)(0,0,axlen)(1,0,0)(0,0,-1.2)(p1)    \n' + \
         '    % put { rotate(beam_ang, (p1), [beam_axis]) }                 \n' + \
         '    %     { line [linewidth=.2pt,linecolor=blue,linestyle=dashed] \n' + \
         '    %         (b0)(b1) }                                          \n' + \
@@ -159,11 +164,11 @@ def gen_sk(fname, det_size, det_pt, eVec,
     print >> fid, '\n% the detector'
     print >> fid, \
         'def detector_frame {                                                                            \n' + \
-        '    line [linewidth=1.2pt,arrows=<->] (axlen,0,0)(p1)(0,axlen,0)                                \n' + \
-        '    line [linewidth=1.2pt,arrows=->]  (p1)(0,0,axlen)                                           \n' + \
-        '    special |\uput[d]#1{$\mathrm{X}_d$}                                                         \n' + \
-        '             \uput[r]#2{$\mathrm{Y}_d$}                                                         \n' + \
-        '             \uput[l]#3{$\mathrm{Z}_d$}|                                                        \n' + \
+        '    line [linewidth=%fpt,arrows=<->] (axlen,0,0)(p1)(0,axlen,0)                                 \n' % (axwgt_pt) + \
+        '    line [linewidth=%fpt,arrows=->]  (p1)(0,0,axlen)                                            \n' % (axwgt_pt) + \
+        '    special |\uput[d]#1{$\hat{\mathbf{X}}_d$}                                                   \n' + \
+        '             \uput[r]#2{$\hat{\mathbf{Y}}_d$}                                                   \n' + \
+        '             \uput[l]#3{$\hat{\mathbf{Z}}_d$}|                                                  \n' + \
         '        (axlen,0,0)(0,axlen,0)(0,0,axlen)                                                       \n' + \
         '    polygon [fillcolor=gray, lay=under, linecolor=black]                                        \n' + \
         '        (-0.5*det_size_x, -0.5*det_size_y) ( 0.5*det_size_x, -0.5*det_size_y)                   \n' + \
@@ -175,22 +180,22 @@ def gen_sk(fname, det_size, det_pt, eVec,
     print >> fid, '\n% the sample frame'
     print >> fid, \
         'def sample_frame {                                            \n' + \
-        '  line [linewidth=1.2pt,arrows=<->] (axlen,0,0)(p1)(0,axlen,0)\n' + \
-        '  line [linewidth=1.2pt,arrows=->]  (p1)(0,0,axlen)           \n' + \
-        '  special |\uput[dr]#1{$\mathrm{X}_s$}                        \n' + \
-        '           \uput[u]#2{$\mathrm{Y}_s$}                         \n' + \
-        '           \uput[dr]#3{$\mathrm{Z}_s$}|                       \n' + \
+        '  line [linewidth=%fpt,arrows=<->] (axlen,0,0)(p1)(0,axlen,0) \n' % (axwgt_pt) + \
+        '  line [linewidth=%fpt,arrows=->]  (p1)(0,0,axlen)            \n' % (axwgt_pt) + \
+        '  special |\uput[dr]#1{$\hat{\mathbf{X}}_s$}                  \n' + \
+        '           \uput[u ]#2{$\hat{\mathbf{Y}}_s$}                  \n' + \
+        '           \uput[dr]#3{$\hat{\mathbf{Z}}_s$}|                 \n' + \
         '      (axlen,0,0)(0,axlen,0)(0,0,axlen)(0,0,-1)               \n' + \
         '  }                                                           \n'
     
     print >> fid, '\n% the crystal frame'
     print >> fid, \
         'def crystal_frame {                                           \n' + \
-        '  line [linewidth=1.2pt,arrows=<->] (axlen,0,0)(p1)(0,axlen,0)\n' + \
-        '  line [linewidth=1.2pt,arrows=->]  (p1)(0,0,axlen)           \n' + \
-        '    special |\uput[r]#1{$\mathrm{X}_c$}                       \n' + \
-        '             \uput[dl]#2{$\mathrm{Y}_c$}                      \n' + \
-        '             \uput[r]#3{$\mathrm{Z}_c$}|                      \n' + \
+        '  line [linewidth=%fpt,arrows=<->] (axlen,0,0)(p1)(0,axlen,0) \n' % (axwgt_pt) + \
+        '  line [linewidth=%fpt,arrows=->]  (p1)(0,0,axlen)            \n' % (axwgt_pt) + \
+        '    special |\uput[r ]#1{$\hat{\mathbf{X}}_c$}                \n' + \
+        '             \uput[l ]#2{$\hat{\mathbf{Y}}_c$}                \n' + \
+        '             \uput[r ]#3{$\hat{\mathbf{Z}}_c$}|               \n' + \
         '        (axlen,0,0)(0,axlen,0)(0,0,axlen)(0,0,-1)             \n' + \
         '  }                                                           \n'
     
@@ -200,12 +205,13 @@ def gen_sk(fname, det_size, det_pt, eVec,
         '  put { rotate(det_ang, (p1), [det_axis]) then translate([tvec_d])} {detector_frame}          \n' + \
         '  line [arrows=->,linecolor=red]  (p1)(tpt_d)                                                 \n' + \
         '  special |\uput[dr]#1{$\mathrm{P}_1$}                                                        \n' + \
-        '           \uput[l]#2{$\mathrm{P}_4$}|                                                       \n' + \
-        '          (tpt_d)(d1)                                                                         \n' + \
+        '           \uput[ul]#2{$\mathbf{t}_d$}                                                        \n' + \
+        '           \uput[l ]#3{$\mathrm{P}_4$}|                                                       \n' + \
+        '          (tpt_d)(tpt_d_label)(d1)                                                            \n' + \
         '}                                                                                             \n' + \
         'def final_sample {                                                                            \n' + \
         '  put { rotate(sam_ang, (p1), [sam_axis]) then translate([tvec_s])} {sample_frame}            \n' + \
-        '  line [lay=overarrows=->,linecolor=green]  (p1)(tpt_s)                                       \n' + \
+        '  line [lay=over,arrows=->,linecolor=green]  (p1)(tpt_s)                                      \n' + \
         '  put { translate([tvec_s])}                                                                  \n' + \
         '      { line [lay=over,linewidth=.2pt,linecolor=green,linestyle=dashed]                       \n' + \
         '          (0, -1.1*axlen, 0)(0, 1.1*axlen, 0)                                                 \n' + \
@@ -227,9 +233,10 @@ def gen_sk(fname, det_size, det_pt, eVec,
         '    { sweep[fillstyle=none,linecolor=black,linestyle=dashed,linewidth=0.2pt]{                 \n' + \
         '      n_segs<>, rotate(360/n_segs, (p1), [1,0,0])}(0,0,1) } }                                 \n' + \
         '  special |\uput[dl]#1{$\mathrm{P}_2$}                                                        \n' + \
-        '           \uput[r]#2{$\omega$}                                                               \n' + \
-        '           \uput[l]#3{$\chi$}|                                                              \n' + \
-        '          (tpt_s)(ome_label)(chi_label)                                                       \n' + \
+        '           \uput[dr]#2{$\mathbf{t}_s$}                                                        \n' + \
+        '           \uput[r ]#3{$\omega$}                                                              \n' + \
+        '           \uput[l ]#4{$\chi$}|                                                               \n' + \
+        '          (tpt_s)(tpt_s_label)(ome_label)(chi_label)                                          \n' + \
         '}                                                                                             \n' + \
         'def final_crystal {                                                                           \n' + \
         '  put { rotate(sam_ang, (p1), [sam_axis]) then translate([tvec_s])                            \n' + \
@@ -244,12 +251,13 @@ def gen_sk(fname, det_size, det_pt, eVec,
         '      { sweep[linecolor=black,arrows=->]{                                                     \n' + \
         '        n_segs, rotate(tth/n_segs, (p1), [tthvec])}(bpt) }                                    \n' + \
         '      { line[linewidth=0.2pt,linecolor=magenta,linestyle=dashed](bptd_m)(bptd_p)} }           \n' + \
-        '  special |\uput[ul]#1{$\hat{\mathrm{G}}_{hkl}$}                                              \n' + \
-        '           \uput[r]#2{$\hat{e}$}                                                              \n' + \
-        '           \uput[r]#3{$\hat{b}$}                                                              \n' + \
+        '  special |\uput[u ]#1{$\hat{\mathbf{G}}_{hkl}$}                                              \n' + \
+        '           \uput[r ]#2{$\hat{\mathbf{e}}$}                                                    \n' + \
+        '           \uput[r ]#3{$\hat{\mathbf{b}}$}                                                    \n' + \
         '           \uput[dr]#4{$\mathrm{P}_3$}                                                        \n' + \
-        '           \uput[ur]#5{$2\\theta$}|                                                           \n' + \
-        '           (g1_label)(e1_label)(b1_label)(tpt_c)(d2)                                          \n' + \
+        '           \uput[ r]#5{$\mathbf{t}_c$}                                                        \n' + \
+        '           \uput[ur]#6{$2\\theta$}|                                                           \n' + \
+        '           (g1_label)(e1_label)(b1_label)(tpt_c)(tpt_c_label)(d2)                             \n' + \
         '}                                                                                             \n' + \
         '                                                                                              \n' + \
         'put { view((eye), (look_at)) } { {lab_frame} {final_detector} {final_sample} {final_crystal} }\n'
@@ -280,7 +288,8 @@ if __name__ == '__main__':
     cmd_str = 'cd %s\n' % (output_dir) + \
               'sketch -o %s.sk.out %s.sk\n' % (fname_no_suffix, fname_no_suffix) + \
               'latex %s.tex\n' % (fname_no_suffix) + \
-              'dvips -o %s.ps %s.dvi' % (fname_no_suffix, fname_no_suffix)
+              'dvips -o %s.ps %s.dvi\n' % (fname_no_suffix, fname_no_suffix) + \
+              'dvipdf %s.dvi %s.pdf' % (fname_no_suffix, fname_no_suffix)
     print cmd_str
     print >> f, cmd_str
     f.close()

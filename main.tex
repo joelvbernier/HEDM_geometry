@@ -4,12 +4,15 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage[bookmarks=true, colorlinks=true]{hyperref}
+\usepackage{setspace}
 % Graphics
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
 \pdfcompresslevel=9
 
+\setlength{\parskip}{1ex}
+\doublespacing
 \raggedright
 
 % Front matter
@@ -19,14 +22,14 @@
 % some macros
 \newcommand{\mbm}[1]{\ensuremath{\mbox{\boldmath$#1$}}}
 
-\newcommand{\tvecd}{\ensuremath{\vec{\mbm{\mathrm{t}}}_d}}
-\newcommand{\tvecs}{\ensuremath{\vec{\mbm{\mathrm{t}}}_s}}
-\newcommand{\tvecc}{\ensuremath{\vec{\mbm{\mathrm{t}}}_c}}
+\newcommand{\tvecd}{\ensuremath{\mbm{\mathrm{t}}_d}}
+\newcommand{\tvecs}{\ensuremath{\mbm{\mathrm{t}}_s}}
+\newcommand{\tvecc}{\ensuremath{\mbm{\mathrm{t}}_c}}
 \newcommand{\rmatd}{\ensuremath{\mathsf{R}_d}}
 \newcommand{\rmats}{\ensuremath{\mathsf{R}_s}}
 \newcommand{\rmatc}{\ensuremath{\mathsf{R}_c}}
 \newcommand{\bmat}{\ensuremath{\mathsf{B}}}
-\newcommand{\gvec}{\ensuremath{\vec{\mbm{\mathrm{G}}}_{hkl}}}
+\newcommand{\gvec}{\ensuremath{\mbm{\mathrm{G}}_{hkl}}}
 \newcommand{\ghat}{\ensuremath{\hat{\mbm{\mathrm{G}}}_{hkl}}}
 \newcommand{\bhat}{\ensuremath{\hat{\mbm{\mathrm{b}}}}}
 \newcommand{\dhat}{\ensuremath{\hat{\mbm{\mathrm{d}}}_{hkl}}}
@@ -155,21 +158,34 @@ fundamental coordinate systems:
   \item the {\bf sample} frame, \samframe; and
   \item the {\bf crystal} frame, \xtlframe.
 \end{itemize}
+
 The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
 non-neglible physical extent in the lab frame, typically possessing a
-rectangular or circular cross-section; the beam direction is
-represented by the unit vector \bhat.  The centroid of the incident
-beam cross-section can be considered to coincide with the origin of
-\labframe\, \Pzero.
-%
-A typical detector element has a planar active area with a rectangular shape.  A complete instrument may contain several independent detectors with unique orientations and placements in the lab frame.  A cartesian coordinate system \detframe\ is attached to each independent element as follows: the origin \Pone\ is coincident with the centroid of the active surface with \Zd\ representing the normal.  The \Xd,\Yd\ directions are typically aligned with the horizontal and vertical pixel-relative directions on each panel.  Vector components in each independent detector coordinate system, \detframe\, are related to components in \labframe\ via a simple affine transformation:
+rectangular or circular cross-section.  The beam direction is
+represented by the unit vector \bhat, and the centroid of its cross-section is defined to coincide with the origin of
+\labframe, labeled \Pzero.
+
+A typical detector element has a planar active area with a rectangular shape.  A complete instrument may contain several independent detectors with unique orientations and placements in the lab frame.  A cartesian coordinate system \detframe\ is attached to each independent detector element as follows: the origin \Pone\ is coincident with the centroid of the active surface, and \Zd\ represents the plane normal.  The \Xd,\Yd\ directions are typically aligned with the horizontal and vertical pixel-relative directions on each panel.  Vector components in each independent detector coordinate system, \detframe\, are related to components in \labframe\ via a simple affine transformation:
+\begin{gather}
+  \labcomps{\mbm{\xi}} = \rmatd\cdot\detcomps{\mbm{\xi}} + \labcomps{\tvecd}
+\end{gather}
+where $\tvecd = \Pone - \Pzero$ and the notation $\labcomps{\mbm{\xi}}$ indicates the components of $\mbm{\xi}$ in \labframe.  Because only planar detectors are considered, the components of a detector-relative point are of the form $\detcomps{\mbm{\xi}}=\begin{bmatrix}x&y&0\end{bmatrix}$.
+
+The sample frame provides a basis in which to represent a uniquely oriented and located specimen.  For the arbitrarily defined sample-relative vector $\mathbf{S}$, components in \samframe\ are connected to \labframe\ via the affine transformation
 \begin{equation}
-  \labcomps{\vec{\mbm{x}}} = \rmatd\cdot\detcomps{\vec{\mbm{x}}} + \labcomps{\tvecd}
+  \labcomps{\mathbf{s}} = \rmats\cdot\samcomps{\mathbf{s}} + \labcomps{\tvecs}  
 \end{equation}
-where the notation $\labcomps{\vec{\mbm{\xi}}}$ indicates the components of $\vec{\mbm{\xi}}$ in \labframe.  
-%
-sample frame provides a basis in which to represent a uniquely oriented and located specimen.  The basis vectors \samframe\ are connected to \labframe\ via a simple affine transformation, In the case of the rotation method, this is the oscillation frame.  Without loss of generality, the oscillation axis, is fixed to \Ys.  It may be canted with respect to \Yl\ by the angle $\chi$\footnote{the canting angle $\chi$ is typically very small for an HEDM schema, although some special cases might require it to be set to some non-zero value.  Including this degree of freedom in the model also allows for it to be quantified via calibration.}.  The oscillation angle itself is represented by $\omega$.  The full model has a sufficient number of degrees of freedom to preclude the need for a third rotational degree of freedom for \samframe.
+where $\tvecs=\Ptwo-\Pzero$.  In the case of the rotation method, this is frame is the oscillation frame.  Without loss of generality, the oscillation axis is fixed to \Ys.  It may be canted with respect to \Yl\ by the angle $\chi$\footnote{the canting angle $\chi$ is typically very small for an HEDM schema, although some special cases might require it to be set to some non-zero value.  Including this degree of freedom in the model also allows for it to be quantified via calibration.}.  The oscillation angle itself is represented by $\omega$.  The full model has a sufficient number of degrees of freedom to preclude the need for a third rotational degree of freedom for \samframe.
+
+The crystal frame represent a local RHON coordinate system attached to the lattice of a single-crystal domain in the sample.  In the context of far-field HEDM, the origin of \xtlframe, labeled \Pthree, represents the centroid of the crystallite.  For a crystal-relative vector $\mathbf{c}$, the components are transformed as
+\begin{align}
+  \samcomps{\mathbf{c}} &= \rmatc\cdot\xtlcomps{\mathbf{c}} + \samcomps{\tvecc}\\
+  \labcomps{\mathbf{c}} &= \rmats\cdot\rmatc\cdot\xtlcomps{\mathbf{c}} + \rmats\cdot\samcomps{\tvecc} + \labcomps{\tvecs}
+\end{align}
+where $\tvecc=\Pthree-\Ptwo$.
+
+Diffraction.
 
 \begin{figure}[hb]
   \centering
