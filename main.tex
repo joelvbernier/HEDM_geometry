@@ -80,6 +80,8 @@
 \newcommand{\ie}{{\em i.e.}}
 \newcommand{\eg}{{\em e.g.}}
 \newcommand{\cf}{{\em cf.}}
+\newcommand{\xray}{X-ray}
+\newcommand{\xrays}{X-rays}
 
 \newcommand{\gx}{\ensuremath{\gamma_x}}
 \newcommand{\gy}{\ensuremath{\gamma_y}}
@@ -173,6 +175,8 @@ that rotates about an axis that is nominally perpendicular to the
 incident beam.
 \end{abstract}
 
+\section{Coordinate Systems}
+
 A single-detector diffraction measurement schema is illustrated in
 \figref{F:diffraction_schema}.  For genearlity we utilize four
 fundamental coordinate systems:
@@ -240,6 +244,38 @@ vector $\mathbf{c}$, the components are transformed as
   \labcomps{\mathbf{c}} &= \rmats\cdot\rmatc\cdot\xtlcomps{\mathbf{c}} + \rmats\cdot\samcomps{\tvecc} + \labcomps{\tvecs}
 \end{align}
 where $\tvecc=\Pthree-\Ptwo$.
+%%
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=\textwidth]{new_geometry.pdf}
+  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to cread the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour are shown.}
+  \label{F:diffraction_schema}
+\end{figure}
+%%
+
+\section{Diffraction}
+In order to insert the geometry of diffraction into the coordinate system hierarchy described above, it is necessary to etablish a convention for describing the crystal lattice. The crystal lattice itself may be
+parameterized by its primitive vectors \cella, \cellb, and \cellc.
+they share a common origin at a lattice site and are subject to the
+following conditions:
+%%
+\begin{equation}
+  \begin{array}{rcl}
+    \|\cella\| &=& a\\
+    \|\cellb\| &=& b\\
+    \|\cellc\| &=& c\\
+    {1 \over bc}\dotp{\cellb}{\cellc} &=& \cos\dalfa\\
+    {1 \over ca}\dotp{\cellc}{\cella} &=& \cos\dbeta\\
+    {1 \over ab}\dotp{\cella}{\cellb} &=& \cos\dgama
+  \end{array} \label{E:lattParams}
+\end{equation}
+%% 
+The six scalar cell parameters \cellParams\ represent a convenient parameterization of the reference unit cell, which typically correspond to an unloaded state at a reference temperature. Crystal symmetry operations (excluding triclinic) generate equivalences among cell parameters; however once a crystal is deformed, the reference symmetry is broken and all six parameters must be considered as independent.  The treatment of strained crystals in the context of the reference crystal symmetry is discussed in detail below.  For writing components of crystal-relative vectors and tensors in \xtlframe, 
+a convention must be chosen to register the lattice vectors.  The
+convention employed herein is consistent with that proposed by
+\cite{Nye:crysBookAppB}.  Explicitly stated, $\cella\parallel\Xc$ and
+$(\crossp{\cella}{\cellb})\parallel\Zc$, as depicted in
+\figref{F:lattice}.
 
 The reciprocal lattice, which forms a dual basis to the direct
 lattice, is a very useful concept in diffraction.  The reciprocal lattice vectors are
@@ -268,7 +304,7 @@ reciprocal lattice to the crystal frame is formulated as
 where \rcellParams\ are the reciprocal lattice parameters defined
 analogously to the direct lattice parameters in \figref{F:lattice} and
 \eqnref{E:lattParams}.
-
+%%
 \begin{figure}
   \centering
   \includegraphics[width=0.5\textwidth]{unitCell.pdf}
@@ -280,15 +316,29 @@ analogously to the direct lattice parameters in \figref{F:lattice} and
     frame, \samframe.}
   \label{F:lattice}
 \end{figure}
+%%
 
-Diffraction.
+Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  The unit vector aligned with its associated diffracted beam, \dhat, is
+\begin{align}
+\dhat &= \mathsf{R}\left(\pi, \ghat\right)\cdot\left(-\bhat\right) \nonumber\\
+      &= \left(2\ghat\otimes\ghat - \eye\right)\cdot\left(-\bhat\right) \nonumber\\
+      &= \left(\eye - 2\ghat\otimes\ghat\right)\cdot\bhat \label{E:dhat}\\
+      & \mbox{where: } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\|,  \label{E:braggCondition}\\
+      & \dhat\cdot\Zd < 0,  \label{E:intersectsDetector}
+\end{align}
+and \bhat\ is the unit vector aligned with the beam propgation direction.  \eqnref{E:braggCondition} is the brag condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is a tertiary condition that the point \Pfour\ must also lie within the physical extent of the detector element, but that is an easily filetered result.
 
-\begin{figure}[hb]
-  \centering
-  \includegraphics[width=\textwidth]{new_geometry.pdf}
-  \caption{A single-detector diffraction schema illustrating.}
-  \label{F:diffraction_schema}
-\end{figure}
+\begin{align}
+\labcomps{\gvec} &= \rmats \samcomps{\gvec} \\
+                 &= \rmats \defgrad^{-T} \xtlcomps{\gvec} \\
+                 &= \rmats \defgrad^{-T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \\
+                 &= \rmats \vmat^{-1} \rmatc^{T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix}
+\end{align}
+
+\begin{equation}
+  \left(\eye - \bhat \otimes \bhat\right)\cdot\dhat
+\end{equation}
+
 
 \begin{gather}
 \Zd \cdot (\Pfour - \Pone) = 0 \\
@@ -299,29 +349,13 @@ Diffraction.
 \Pone   &= \tvecd \\
 \Ptwo   &= \tvecs \\
 \Pthree &= \rmats\tvecc + \tvecs \\
-\Pfour  &= \rmatd\mbm{\xi}_{d} + \tvecd \\
+\Pfour  &= \rmatd\mbm{\xi}_{d} + \tvecd
 \end{align}
-
-\begin{align}
-\detcomps{\Pfour} &= \begin{bmatrix}x&y&0\end{bmatrix} \\
-                  &=\rmatd^T\cdot\detcomps{ \rmats\tvecc+\tvecs-\tvecd 
-    - \frac{\left(\rmatd\Zl\right)\cdot\left(\rmats\tvecc+\tvecs-\tvecd\right)}
-           {\left(\rmatd\Zl\right)\cdot\dhat}\cdot\dhat } 
-\end{align}
-
-\begin{align}
-\dhat &= \mathsf{R}\left(\pi, \ghat\right)\cdot\left(-\bhat\right) \\
-      &= \left(2\ghat\otimes\ghat - \eye\right)\cdot\left(-\bhat\right) \\
-      &= \left(\eye - 2\ghat\otimes\ghat\right)\cdot\bhat \\
-      & \mbox{where: } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\|,  \\
-      & \mbox{and } \dhat\cdot\Zd < 0 \\ 
-\labcomps{\gvec} &= \rmats \samcomps{\gvec} \\
-                 &= \rmats \defgrad^{-T} \xtlcomps{\gvec} \\
-                 &= \rmats \defgrad^{-T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \\
-                 &= \rmats \vmat^{-1} \rmatc^{T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \\\end{align}
 
 \begin{equation}
-  \left(\eye - \bhat \otimes \bhat\right)\cdot\dhat
+\boxed{\detcomps{\Pfour} = \rmatd^T\cdot\labcomps{ \rmats\tvecc+\tvecs-\tvecd 
+    - \frac{\left(\rmatd\Zl\right)\cdot\left(\rmats\tvecc+\tvecs-\tvecd\right)}
+           {\left(\rmatd\Zl\right)\cdot\dhat}\cdot\dhat } }
 \end{equation}
 
 \end{document}
