@@ -1,0 +1,191 @@
+% vertices of the tetrahedron
+def a 2.5
+def b 3.75
+def c 4.67
+def alpha 90.
+def beta 70.
+def gamma 120.
+
+def cosalphar ( cos(beta)*cos(gamma) - cos(alpha) ) / ( sin(beta)*sin(gamma) )
+def sinalphar sqrt(1 - cosalphar^2)
+
+def avecu [1, 0, 0]
+def bvecu [cos(gamma), sin(gamma), 0]
+def cvecu [cos(beta), -cosalphar*sin(beta), sinalphar*sin(beta)]
+
+def avec a*[avecu]
+def bvec b*[bvecu]
+def cvec c*[cvecu]
+
+def astar [bvec] * [cvec]
+def bstar [cvec] * [avec]
+def cstar [avec] * [bvec]
+
+def p1 (0,0,0)
+def p2 (p1) + [bvec]
+def p3 (p1) + [avec] + [bvec]
+def p4 (p1) + [avec]
+def p5 (p1) + [cvec]
+def p6 (p1) + [bvec] + [cvec] 
+def p7 (p1) + [avec] + [bvec] + [cvec] 
+def p8 (p1) + [avec] + [cvec] 
+
+def axlen 4
+def axlen2 0.33*axlen
+def axlen3 0.50*axlen
+def axopts [linewidth=1.5pt,arrows=->]
+def axopts2 [linewidth=2.5pt,arrows=->]
+def delb 1.05
+def delc 1.35
+def n_segs 100
+
+def apt (p1) + a*[avecu]
+def bpt (p1) + b*[bvecu]
+def cpt (p1) + c*[cvecu]
+
+def apt1 (p1) + axlen*[avecu]
+def bpt1 (p1) + axlen*[bvecu]
+def cpt1 (p1) + axlen*[cvecu]
+
+def apt2 (p1) + axlen2*[avecu]
+def bpt2 (p1) + axlen2*[bvecu]
+def cpt2 (p1) + axlen2*[cvecu]
+
+def apt3 (p1) + axlen3*[avecu]
+def bpt3 (p1) + axlen3*[bvecu]
+def cpt3 (p1) + axlen3*[cvecu]
+
+def bptp (delb*axlen*cos(gamma), delb*axlen*sin(gamma), 0)
+def cptp (delc*axlen*cos(beta), -delc*axlen*cosalphar*sin(beta), delc*axlen*sinalphar*sin(beta))
+
+% faces of the unit cell.
+def unitCell{
+    %% def cellopts [linestyle=solid,linecolor=black,fillcolor=lightgray,opacity=0.1,cull=false]
+    %% 
+    %% polygon[cellopts](p1)(p2)(p3)(p4) % bottom
+    %% polygon[cellopts](p4)(p3)(p7)(p8) % a front
+    %% polygon[cellopts](p2)(p6)(p7)(p3) % b front
+    %% polygon[cellopts](p1)(p5)(p6)(p2) % b rear
+    %% polygon[cellopts](p4)(p8)(p5)(p1) % 1 rear
+    %% polygon[cellopts](p5)(p8)(p7)(p6) % top
+    def cellopts [linestyle=dashed,linecolor=black]
+    line[cellopts] (p1)(p2)
+    line[cellopts] (p2)(p3)
+    line[cellopts] (p3)(p4)
+    line[cellopts] (p4)(p1)
+    line[cellopts] (p1)(p5)
+    line[cellopts] (p2)(p6)
+    line[cellopts] (p3)(p7)
+    line[cellopts] (p4)(p8)
+    line[cellopts] (p5)(p6)
+    line[cellopts] (p6)(p7)
+    line[cellopts] (p7)(p8)
+    line[cellopts] (p8)(p5)
+    }
+% 
+% def hexCell{
+%     def cellopts [fillstyle=solid,linestyle=dashed,fillcolor=lightgray,linecolor=black]
+% 
+%     polygon[cellopts](p1)(p2)(p3)(p4) % bottom
+%     polygon[cellopts](p4)(p3)(p7)(p8) % a front
+%     polygon[cellopts](p2)(p6)(p7)(p3) % b front
+%     polygon[cellopts](p1)(p5)(p6)(p2) % b rear
+%     polygon[cellopts](p4)(p8)(p5)(p1) % 1 rear
+%     polygon[cellopts](p5)(p8)(p7)(p6) % top
+%     }
+%
+% coordinate system -- APS convention
+%
+def crysCS{
+    def scl 2.0
+    %% def astretch (p1) + scl*a*unit([avec])
+    %% def bstretch (p1) + scl*b*unit([bvec])
+    %% def cstretch (p1) + scl*c*unit([cvec])
+    %% 
+    %% line[linecolor=red,linewidth=3pt,arrows=->] (p1)(astretch)
+    %% line[linecolor=blue,linewidth=3pt,arrows=->] (p1)(bstretch)
+    %% line[linecolor=green,linewidth=3pt,arrows=->] (p1)(cstretch)
+
+    line[axopts] (0,0,0)(axlen,0,0)
+    line[axopts] (0,0,0)(0,axlen,0)
+    line[axopts] (0,0,0)(0,0,axlen)
+
+    special |\rput[cc]#1{$\hat{\mathbf{X}}_c \parallel \mathbf{a}$}|((axlen+0.5), 0, 0)
+    special |\rput[cc]#1{$\hat{\mathbf{Y}}_c$}|(0,(axlen+0.5),0)
+    special |\rput[cc]#1{$\hat{\mathbf{Z}}_c \parallel \mathbf{c}^{*}$}|(0,0,(axlen+0.5))
+}
+
+%
+% coordinate system -- APS convention
+%
+def sampCS{
+    line[axopts] (0,0,0)(axlen,0,0)
+    line[axopts] (0,0,0)(0,axlen,0)
+    line[axopts] (0,0,0)(0,0,axlen)
+
+    special |\rput[cc]#1{$\mathbf X_s$}|((axlen+0.5), 0, 0)
+    special |\rput[cc]#1{$\mathbf Y_s$}|(0,(axlen+0.5),0)
+    special |\rput[cc]#1{$\mathbf Z_s$}|(0,0,(axlen+0.5))
+}
+
+%
+% coordinate system -- APS convention
+%
+% "tth angle mark"
+def gamaMark{
+    sweep[linewidth=2pt,linecolor=darkgray,arrows=->] {n_segs, rotate(gamma/n_segs, (p1), [cstar]) }(apt2)
+    def textp rotate(gamma/2, (p1), [cstar])*(apt3)
+    special |\rput[br]#1{$\gamma$}|(textp)
+    }
+% "tth angle mark"
+def betaMark{
+    sweep[linewidth=2pt,linecolor=darkgray,arrows=->] {n_segs, rotate(beta/n_segs, (0,0,0), [bstar]) }(cpt2)
+    def textp rotate(beta/2, (p1), [bstar])*(cpt3)
+    special |\rput[br]#1{$\beta$}|(textp)
+    }
+% "tth angle mark"
+def alfaMark{
+    sweep[linewidth=2pt,linecolor=darkgray,arrows=->] {n_segs, rotate(alpha/n_segs, (0,0,0), [astar]) }(bpt2)
+    def textp rotate(alpha/2, (p1), [astar])*(bpt3)
+    special |\rput[br]#1{$\alpha$}|(textp)
+    }
+
+def lattCS{
+    line[lay=over,linewidth=2.5pt,arrows=->,linecolor=red  ] (0,0,0)(apt)
+    line[lay=over,linewidth=2.5pt,arrows=->,linecolor=green] (0,0,0)(bpt)
+    line[lay=over,linewidth=2.5pt,arrows=->,linecolor=blue ] (0,0,0)(cpt)
+
+    % special |\rput[cc]#1{$\mathbf X_s$}|((axlen+0.5), 0, 0)
+    special |\rput[cc]#1{$\mathbf{b}$}|(bptp)
+    special |\rput[cc]#1{$\mathbf{c}$}|(cptp)
+    {alfaMark}
+    {betaMark}
+    {gamaMark}
+}
+
+% def fullHexCell{
+%     {unitCell}
+%     put {rotate(120., (0,0,0), [0,0,1])}{hexCell}
+%     put {rotate(240., (0,0,0), [0,0,1])}{hexCell}
+%     }
+def fullHexCell{
+    {unitCell}
+    }
+
+def setup{
+    def phi -120.
+    def n [1., 1., 1.]
+    put {rotate(phi, (0, 0, 0), [n])}{fullHexCell}
+    put {rotate(phi, (0, 0, 0), [n])}{crysCS}
+    put {rotate(phi, (0, 0, 0), [n])}{lattCS}
+    % {sampCS}
+    }
+
+
+put { view((1,1,1), (-1,-1,-1)) } { {setup} }
+
+% def myView{
+% put {view((1, 1, 1))}{setup} 
+% }
+% 
+% put {scale(1.5)}{myView} 

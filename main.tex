@@ -74,6 +74,7 @@
 
 % cross-references
 \newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\eqnref}[1]{Equation~\ref{#1}}
 
 % miscellaneous
 \newcommand{\ie}{{\em i.e.}}
@@ -88,6 +89,29 @@
 \newcommand{\sampdir}{\ensuremath{\mathbf{s}}}
 \newcommand{\hkls}{\ensuremath{hkl}}
 \newcommand{\bhkls}{\ensuremath{\bar{h}\bar{k}\bar{l}}}
+
+\newcommand{\cella}{\ensuremath{\mathbf{a}}}
+\newcommand{\cellb}{\ensuremath{\mathbf{b}}}
+\newcommand{\cellc}{\ensuremath{\mathbf{c}}}
+\newcommand{\dalfa}{\ensuremath{\alpha}}
+\newcommand{\dbeta}{\ensuremath{\beta}}
+\newcommand{\dgama}{\ensuremath{\gamma}}
+
+\newcommand{\cellParams}{\ensuremath{\left\{ a,b,c,\dalfa,\dbeta,\dgama \right\}}}
+\newcommand{\cellParamsRef}{\ensuremath{\left\{ a_0,b_0,c_0,\dalfa_0,\dbeta_0,\dgama_0 \right\}}}
+
+\newcommand{\rcella}{\ensuremath{\mathbf{a}^*}}
+\newcommand{\rcellb}{\ensuremath{\mathbf{b}^*}}
+\newcommand{\rcellc}{\ensuremath{\mathbf{c}^*}}
+\newcommand{\ralfa}{\ensuremath{\alpha^*}}
+\newcommand{\rbeta}{\ensuremath{\beta^*}}
+\newcommand{\rgama}{\ensuremath{\gamma^*}}
+
+\newcommand{\rcellParams}{\ensuremath{\left\{ a^*,b^*,c^*,\ralfa,\rbeta,\rgama \right\}}}
+
+\newcommand{\cellVol}{\ensuremath{v}}
+\newcommand{\cellVolExpr}{\ensuremath{\dotp{\cella}{\crossp{\cellb}{\cellc}}}}
+\newcommand{\strain}{\mbm{\epsilon}}
 
 % MATH OPERATORS
 \newcommand{\dotp}[2]{\ensuremath{#1\cdot#2}}
@@ -163,27 +187,99 @@ The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
 non-neglible physical extent in the lab frame, typically possessing a
 rectangular or circular cross-section.  The beam direction is
-represented by the unit vector \bhat, and the centroid of its cross-section is defined to coincide with the origin of
-\labframe, labeled \Pzero.
+represented by the unit vector \bhat, and the centroid of its
+cross-section is defined to coincide with the origin of \labframe,
+labeled \Pzero.
 
-A typical detector element has a planar active area with a rectangular shape.  A complete instrument may contain several independent detectors with unique orientations and placements in the lab frame.  A cartesian coordinate system \detframe\ is attached to each independent detector element as follows: the origin \Pone\ is coincident with the centroid of the active surface, and \Zd\ represents the plane normal.  The \Xd,\Yd\ directions are typically aligned with the horizontal and vertical pixel-relative directions on each panel.  Vector components in each independent detector coordinate system, \detframe\, are related to components in \labframe\ via a simple affine transformation:
+A typical detector element has a planar active area with a rectangular
+shape.  A complete instrument may contain several independent
+detectors with unique orientations and placements in the lab frame.  A
+cartesian coordinate system \detframe\ is attached to each independent
+detector element as follows: the origin \Pone\ is coincident with the
+centroid of the active surface, and \Zd\ represents the plane normal.
+The \Xd,\Yd\ directions are typically aligned with the horizontal and
+vertical pixel-relative directions on each panel.  Vector components
+in each independent detector coordinate system, \detframe\, are
+related to components in \labframe\ via a simple affine
+transformation:
 \begin{gather}
   \labcomps{\mbm{\xi}} = \rmatd\cdot\detcomps{\mbm{\xi}} + \labcomps{\tvecd}
 \end{gather}
-where $\tvecd = \Pone - \Pzero$ and the notation $\labcomps{\mbm{\xi}}$ indicates the components of $\mbm{\xi}$ in \labframe.  Because only planar detectors are considered, the components of a detector-relative point are of the form $\detcomps{\mbm{\xi}}=\begin{bmatrix}x&y&0\end{bmatrix}$.
+where $\tvecd = \Pone - \Pzero$ and the notation
+$\labcomps{\mbm{\xi}}$ indicates the components of $\mbm{\xi}$ in
+\labframe.  Because only planar detectors are considered, the
+components of a detector-relative point are of the form
+$\detcomps{\mbm{\xi}}=\begin{bmatrix}x&y&0\end{bmatrix}$.
 
-The sample frame provides a basis in which to represent a uniquely oriented and located specimen.  For the arbitrarily defined sample-relative vector $\mathbf{S}$, components in \samframe\ are connected to \labframe\ via the affine transformation
+The sample frame provides a basis in which to represent a uniquely
+oriented and located specimen.  For the arbitrarily defined
+sample-relative vector $\mathbf{S}$, components in \samframe\ are
+connected to \labframe\ via the affine transformation
 \begin{equation}
   \labcomps{\mathbf{s}} = \rmats\cdot\samcomps{\mathbf{s}} + \labcomps{\tvecs}  
 \end{equation}
-where $\tvecs=\Ptwo-\Pzero$.  In the case of the rotation method, this is frame is the oscillation frame.  Without loss of generality, the oscillation axis is fixed to \Ys.  It may be canted with respect to \Yl\ by the angle $\chi$\footnote{the canting angle $\chi$ is typically very small for an HEDM schema, although some special cases might require it to be set to some non-zero value.  Including this degree of freedom in the model also allows for it to be quantified via calibration.}.  The oscillation angle itself is represented by $\omega$.  The full model has a sufficient number of degrees of freedom to preclude the need for a third rotational degree of freedom for \samframe.
+where $\tvecs=\Ptwo-\Pzero$.  In the case of the rotation method, this
+is frame is the oscillation frame.  Without loss of generality, the
+oscillation axis is fixed to \Ys.  It may be canted with respect to
+\Yl\ by the angle $\chi$\footnote{the canting angle $\chi$ is
+  typically very small for an HEDM schema, although some special cases
+  might require it to be set to some non-zero value.  Including this
+  degree of freedom in the model also allows for it to be quantified
+  via calibration.}.  The oscillation angle itself is represented by
+$\omega$.  The full model has a sufficient number of degrees of
+freedom to preclude the need for a third rotational degree of freedom
+for \samframe.
 
-The crystal frame represent a local RHON coordinate system attached to the lattice of a single-crystal domain in the sample.  In the context of far-field HEDM, the origin of \xtlframe, labeled \Pthree, represents the centroid of the crystallite.  For a crystal-relative vector $\mathbf{c}$, the components are transformed as
+The crystal frame represent a local RHON coordinate system attached to
+the lattice of a single-crystal domain in the sample.  In the context
+of far-field HEDM, the origin of \xtlframe, labeled \Pthree,
+represents the centroid of the crystallite.  For a crystal-relative
+vector $\mathbf{c}$, the components are transformed as
 \begin{align}
   \samcomps{\mathbf{c}} &= \rmatc\cdot\xtlcomps{\mathbf{c}} + \samcomps{\tvecc}\\
   \labcomps{\mathbf{c}} &= \rmats\cdot\rmatc\cdot\xtlcomps{\mathbf{c}} + \rmats\cdot\samcomps{\tvecc} + \labcomps{\tvecs}
 \end{align}
 where $\tvecc=\Pthree-\Ptwo$.
+
+The reciprocal lattice, which forms a dual basis to the direct
+lattice, is a very useful concept in diffraction.  The reciprocal lattice vectors are
+defined\footnote{this is the so-called ``crystallographer's
+convention'' where the prefactor of $2\pi$ is omitted.} as follows:
+%%
+\begin{align}
+  \rcella = {1 \over v}\crossp{\cellb}{\cellc}\\
+  \rcellb = {1 \over v}\crossp{\cellc}{\cella}\\
+  \rcellc = {1 \over v}\crossp{\cella}{\cellb}
+\end{align}
+%%
+where $\cellVol = \cellVolExpr$ represents the volume of the primitive
+cell.  The change-of-basis matrix, \bmat, that takes vector components in the
+reciprocal lattice to the crystal frame is formulated as
+%%
+\begin{align}
+  \bmat &= \xtlcomps{\begin{matrix} \rcella & \rcellb & \rcellc \end{matrix}} \label{E:bmatrix}\\ 
+        &= \frac{1}{\cellVol}\begin{bmatrix}
+           bc\sin{\ralfa}\sin{\dbeta}\sin{\dgama} &                          0 &                                           0 \\
+          -bc\sin{\ralfa}\sin{\dbeta}\cos{\dgama} & ac\sin{\ralfa}\sin{\dbeta} &                                           0 \\
+          -bc(\cos{\ralfa}\sin{\dbeta}\cos{\dgama} + \cos{\dbeta}\sin{\dgama}) & ac\cos{\ralfa}\sin{\dbeta} & ab\sin{\dgama}
+	\end{bmatrix}, \nonumber
+\end{align}
+%%
+where \rcellParams\ are the reciprocal lattice parameters defined
+analogously to the direct lattice parameters in \figref{F:lattice} and
+\eqnref{E:lattParams}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{unitCell.pdf}
+  \caption{The convention for describing the
+    reference (read: unstrained) lattice has $\cella\parallel\Xc$ and
+    $\rcellc\parallel\Zc$. Note that a triclinic
+    primitive cell is depicted for generality.  The crystal orientation, \rmatc,
+    takes components in the crystal frame, \xtlframe, to the sample
+    frame, \samframe.}
+  \label{F:lattice}
+\end{figure}
 
 Diffraction.
 
