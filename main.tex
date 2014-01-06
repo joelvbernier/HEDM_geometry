@@ -1,4 +1,4 @@
-\documentclass[11pt,letterpaper,final]{amsart}
+\documentclass[12pt,letterpaper,final]{amsart}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -11,6 +11,12 @@
 \DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
 \pdfcompresslevel=9
 
+\setlength{\voffset}{0in}
+\setlength{\hoffset}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\marginparwidth}{0in}
+\setlength{\textwidth}{6.5in}
 \setlength{\parskip}{1ex}
 \doublespacing
 \raggedright
@@ -75,6 +81,7 @@
 % cross-references
 \newcommand{\figref}[1]{Figure~\ref{#1}}
 \newcommand{\eqnref}[1]{Equation~\ref{#1}}
+\newcommand{\secref}[1]{\S~\ref{#1}}
 
 % miscellaneous
 \newcommand{\ie}{{\em i.e.}}
@@ -187,6 +194,7 @@ fundamental coordinate systems:
   \item the {\bf crystal} frame, \xtlframe.
 \end{itemize}
 
+\subsection{Laboratory Frame}
 The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
 non-neglible physical extent in the lab frame, typically possessing a
@@ -195,6 +203,7 @@ represented by the unit vector \bhat, and the centroid of its
 cross-section is defined to coincide with the origin of \labframe,
 labeled \Pzero.
 
+\subsection{Detector Frame}
 A typical detector element has a planar active area with a rectangular
 shape.  A complete instrument may contain several independent
 detectors with unique orientations and placements in the lab frame.  A
@@ -215,6 +224,7 @@ $\labcomps{\mbm{\xi}}$ indicates the components of $\mbm{\xi}$ in
 components of a detector-relative point are of the form
 $\detcomps{\mbm{\xi}}=\begin{bmatrix}x&y&0\end{bmatrix}$.
 
+\subsection{Sample Frame}
 The sample frame provides a basis in which to represent a uniquely
 oriented and located specimen.  For the arbitrarily defined
 sample-relative vector $\mathbf{S}$, components in \samframe\ are
@@ -234,6 +244,7 @@ $\omega$.  The full model has a sufficient number of degrees of
 freedom to preclude the need for a third rotational degree of freedom
 for \samframe.
 
+\subsection{Crystal Frame}
 The crystal frame represent a local RHON coordinate system attached to
 the lattice of a single-crystal domain in the sample.  In the context
 of far-field HEDM, the origin of \xtlframe, labeled \Pthree,
@@ -243,20 +254,22 @@ vector $\mathbf{c}$, the components are transformed as
   \samcomps{\mathbf{c}} &= \rmatc\cdot\xtlcomps{\mathbf{c}} + \samcomps{\tvecc}\\
   \labcomps{\mathbf{c}} &= \rmats\cdot\rmatc\cdot\xtlcomps{\mathbf{c}} + \rmats\cdot\samcomps{\tvecc} + \labcomps{\tvecs}
 \end{align}
-where $\tvecc=\Pthree-\Ptwo$.
+where $\tvecc=\Pthree-\Ptwo$.  The forumaltion of diffracted beam vectors for a given unit cell is discussed in \secref{S:diffraction}.
 %%
 \begin{figure}[htb]
   \centering
   \includegraphics[width=\textwidth]{new_geometry.pdf}
-  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to cread the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour are shown.}
+  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to cread the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour\ are shown.  The azimuthal angle, $\eta$, of \ghat\ about \bhat\ is not shown; however, the reference azimuth is, denoted by the unit vector \ehat. }
   \label{F:diffraction_schema}
 \end{figure}
 %%
 
-\section{Diffraction}
+\newpage
+\section{Diffraction}\label{S:diffraction}
+\subsection{Convention for writing components of crystal lattice vectors}\label{S:conventions}
 In order to insert the geometry of diffraction into the coordinate system hierarchy described above, it is necessary to etablish a convention for describing the crystal lattice. The crystal lattice itself may be
 parameterized by its primitive vectors \cella, \cellb, and \cellc.
-they share a common origin at a lattice site and are subject to the
+They share a common origin at a lattice site and are subject to the
 following conditions:
 %%
 \begin{equation}
@@ -318,21 +331,30 @@ analogously to the direct lattice parameters in \figref{F:lattice} and
 \end{figure}
 %%
 
-Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  The unit vector aligned with its associated diffracted beam, \dhat, is
+Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  The unit vector aligned with its associated diffracted beam, \dhat, is then
 \begin{align}
 \dhat &= \mathsf{R}\left(\pi, \ghat\right)\cdot\left(-\bhat\right) \nonumber\\
       &= \left(2\ghat\otimes\ghat - \eye\right)\cdot\left(-\bhat\right) \nonumber\\
       &= \left(\eye - 2\ghat\otimes\ghat\right)\cdot\bhat \label{E:dhat}\\
-      & \mbox{where: } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\|,  \label{E:braggCondition}\\
+      & \mbox{where } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\|,  \label{E:braggCondition}\\
       & \dhat\cdot\Zd < 0,  \label{E:intersectsDetector}
 \end{align}
-and \bhat\ is the unit vector aligned with the beam propgation direction.  \eqnref{E:braggCondition} is the brag condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is a tertiary condition that the point \Pfour\ must also lie within the physical extent of the detector element, but that is an easily filetered result.
+$\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propgation direction.  \eqnref{E:braggCondition} is the bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an addition condition that must be satisfied in the instrument for\Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is straightforward and not explicitly stated in this document.
 
+\subsection{Representing crystal orientation and strain}
+A reciprocal lattice vector is typically representend by its components in the reference (read: undistorted) reciprocal lattice frame, $\begin{Bmatrix}h&k&l\end{Bmatrix}$.  The change-of-basis matrix, \bmat, that takes components in the reciprocal lattice to \xtlframe\ was given by \eqnref{E:bmatrix}  above (\secref{S:conventions}).  The effects of both finite distortion and rotation of a crystal lattice with respect to \samframe\ are captured using a deformation gradient tensor, \defgrad.  Using the polar decomposition, 
+\begin{equation}
+    \defgrad = \vmat \cdot \rmatc,\; \forall\; \vmat \in Sym^{3\times3},\; \rmatc \in SO^3,
+\end{equation}
+where \rmatc\ is the crystal orientation and \vmat\ is the ``left'' stretch tensor.  The tensor \defgrad\ acts on the {\emph direct} lattice vectors, and takes undistorted lattice vectors in the reference crystal frame, \xtlframe, to reoriented and distroted lattice vectors in the sampel frame, \samframe.  It has been shown that 
+$\defgrad^{-T}=\vmat^{-1}\cdot\rmatc$ 
+can be applied analogously to reciprocal lattice vector components written in \xtlframe.
+Given the reciprocal lattice vector \gvec, with components $\begin{Bmatrix}h&k&l\end{Bmatrix}$ in the reciprocal lattice frame, the fully distorted and orientend components in \labframe\ are then derived as
 \begin{align}
 \labcomps{\gvec} &= \rmats \samcomps{\gvec} \\
                  &= \rmats \defgrad^{-T} \xtlcomps{\gvec} \\
                  &= \rmats \defgrad^{-T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \\
-                 &= \rmats \vmat^{-1} \rmatc^{T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix}
+                 &= \rmats \vmat^{-1} \rmatc \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix}.
 \end{align}
 
 \begin{equation}
@@ -340,10 +362,18 @@ and \bhat\ is the unit vector aligned with the beam propgation direction.  \eqnr
 \end{equation}
 
 
+Using the parametric equations for a plane (\eqnref{E:plane}) and line (\eqnref{E:line}), we may obtain a relation linking \dhat\ and \Pfour.
 \begin{gather}
-\Zd \cdot (\Pfour - \Pone) = 0 \\
-\Pfour = \Pthree + u\dhat
+\Zd \cdot (\Pfour - \Pone) = 0 \label{E:plane}\\
+\Pfour = \Pthree + u\dhat \label{E:line}
 \end{gather}
+Substituting for \Pfour\ and rearranging to solve for the scale parameter $u$ yields
+\begin{align}
+    \Zd \cdot (\Pthree - \Pone + u\dhat) &= 0 \nonumber\\
+    \Zd \cdot (\Pthree - \Pone) &= -u\Zd \cdot \dhat \nonumber\\
+    \implies u &= \frac{\Zd \cdot (\Pone - \Pthree)}{\Zd \cdot \dhat
+    }
+\end{align}
 
 \begin{align}
 \Pone   &= \tvecd \\
@@ -353,10 +383,14 @@ and \bhat\ is the unit vector aligned with the beam propgation direction.  \eqnr
 \end{align}
 
 \begin{equation}
-\boxed{\detcomps{\Pfour} = \rmatd^T\cdot\labcomps{ \rmats\tvecc+\tvecs-\tvecd 
-    - \frac{\left(\rmatd\Zl\right)\cdot\left(\rmats\tvecc+\tvecs-\tvecd\right)}
-           {\left(\rmatd\Zl\right)\cdot\dhat}\cdot\dhat } }
+    \boxed{\detcomps{\Pfour} = \rmats^T \cdot \left[ \labcomps{\Pthree - \Pone} - \frac{\labcomps{\Zd}^T\labcomps{\Pthree - \Pone}}{\labcomps{\Zd}^T\labcomps{\dhat}}\labcomps{\dhat} \right] }
 \end{equation}
+
+%\begin{equation}
+%\boxed{\detcomps{\Pfour} = \rmatd^T\cdot\labcomps{ \rmats\tvecc+\tvecs-\tvecd 
+%    - \frac{\left(\rmatd\Zl\right)\cdot\left(\rmats\tvecc+\tvecs-\tvecd\right)}
+%           {\left(\rmatd\Zl\right)\cdot\dhat}\cdot\dhat } }
+%\end{equation}
 
 \end{document}
 
