@@ -21,6 +21,8 @@
 \doublespacing
 \raggedright
 
+\usepackage[numbers,sort&compress]{natbib}
+
 % Front matter
 \author{Joel Vincent Bernier}
 \title{A general geometric model for casting diffraction}
@@ -44,12 +46,19 @@
 \newcommand{\vmat}{\ensuremath{\mbm{\mathrm{V}}}}
 \newcommand{\defgrad}{\ensuremath{\mbm{\mathrm{F}}}}
 
+\newcommand{\ghati}{\ensuremath{\hat{G}_{i}}}
+\newcommand{\bhati}{\ensuremath{\hat{b}_{i}}}
+\newcommand{\dhati}{\ensuremath{\hat{d}_{i}}}
+\newcommand{\ghatj}{\ensuremath{\hat{G}_{j}}}
+\newcommand{\bhatj}{\ensuremath{\hat{b}_{j}}}
+\newcommand{\dhatj}{\ensuremath{\hat{d}_{j}}}
+
 % points
-\newcommand{\Pzero}{ \ensuremath{\mathrm{P0}}}
-\newcommand{\Pone}{  \ensuremath{\mathrm{P1}}}
-\newcommand{\Ptwo}{  \ensuremath{\mathrm{P2}}}
+\newcommand{\Pzero}{\ensuremath{\mathrm{P0}}}
+\newcommand{\Pone}{\ensuremath{\mathrm{P1}}}
+\newcommand{\Ptwo}{\ensuremath{\mathrm{P2}}}
 \newcommand{\Pthree}{\ensuremath{\mathrm{P3}}}
-\newcommand{\Pfour}{ \ensuremath{\mathrm{P4}}}
+\newcommand{\Pfour}{\ensuremath{\mathrm{P4}}}
 
 % coordinate axes
 \newcommand{\Xl}{\ensuremath{\hat{\mbm{\mathrm{X}}}_l}}
@@ -122,7 +131,37 @@
 \newcommand{\cellVolExpr}{\ensuremath{\dotp{\cella}{\crossp{\cellb}{\cellc}}}}
 \newcommand{\strain}{\mbm{\epsilon}}
 
+% CONVENIENCE
+\newcommand{\coe}{\ensuremath{\cos\eta}}
+\newcommand{\sie}{\ensuremath{\sin\eta}}
+\newcommand{\cob}{\ensuremath{\cos\theta}}
+\newcommand{\sib}{\ensuremath{\sin\theta}}
+\newcommand{\cop}{\ensuremath{\cos\phi}}
+\newcommand{\sip}{\ensuremath{\sin\phi}}
+\newcommand{\cow}{\ensuremath{\cos\omega}}
+\newcommand{\siw}{\ensuremath{\sin\omega}}
+\newcommand{\cox}{\ensuremath{\cos\chi}}
+\newcommand{\six}{\ensuremath{\sin\chi}}
+\newcommand{\coxsq}{\ensuremath{\cos^2\chi}}
+\newcommand{\sixsq}{\ensuremath{\sin^2\chi}}
+\newcommand{\sitx}{\ensuremath{\sin{2\chi}}}
+
+\newcommand{\nZ}{\ensuremath{n_0}}
+\newcommand{\nO}{\ensuremath{n_1}}
+\newcommand{\nT}{\ensuremath{n_2}}
+\newcommand{\nZO}{\ensuremath{n_0n_1}}
+\newcommand{\nZT}{\ensuremath{n_0n_2}}
+\newcommand{\nOT}{\ensuremath{n_1n_2}}
+\newcommand{\hgZ}{\ensuremath{\hat{G}_0}}
+\newcommand{\hgO}{\ensuremath{\hat{G}_1}}
+\newcommand{\hgT}{\ensuremath{\hat{G}_2}}
+\newcommand{\hbZ}{\ensuremath{\hat{b}_0}}
+\newcommand{\hbO}{\ensuremath{\hat{b}_1}}
+\newcommand{\hbT}{\ensuremath{\hat{b}_2}}
+
 % MATH OPERATORS
+\newcommand{\rmat}[2]{\ensuremath{\mathsf{R}\left(#1,\;#2\right)}}
+\newcommand{\sub}[2]{\ensuremath{#1_#2}}
 \newcommand{\dotp}[2]{\ensuremath{#1\cdot#2}}
 \newcommand{\crossp}[2]{\ensuremath{#1\times#2}}
 \newcommand{\modulus}[2]{\mathop{\mathrm{mod}\left(\frac{#1}{#2}\right)}}
@@ -339,30 +378,34 @@ Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  Th
       & \mbox{where } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\|,  \label{E:braggCondition}\\
       & \dhat\cdot\Zd < 0,  \label{E:intersectsDetector}
 \end{align}
-$\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propgation direction.  \eqnref{E:braggCondition} is the bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an addition condition that must be satisfied in the instrument for\Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is straightforward and not explicitly stated in this document.
+$\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propagation direction.  \eqnref{E:braggCondition} is the bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an addition condition that must be satisfied in the instrument for\Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is, however, quite straightforward and not explicitly stated in this document.
 
 \subsection{Representing crystal orientation and strain}
-A reciprocal lattice vector is typically representend by its components in the reference (read: undistorted) reciprocal lattice frame, $\begin{Bmatrix}h&k&l\end{Bmatrix}$.  The change-of-basis matrix, \bmat, that takes components in the reciprocal lattice to \xtlframe\ was given by \eqnref{E:bmatrix}  above (\secref{S:conventions}).  The effects of both finite distortion and rotation of a crystal lattice with respect to \samframe\ are captured using a deformation gradient tensor, \defgrad.  Using the polar decomposition, 
+A reciprocal lattice vector is typically representend by its components in the reference (read: undistorted) reciprocal lattice frame, $\begin{Bmatrix}h&k&l\end{Bmatrix}$.  The change-of-basis matrix, \bmat, that takes components in the reciprocal lattice to \xtlframe\ was given by \eqnref{E:bmatrix}  above (\secref{S:conventions}).  The effects of both finite distortion and rotation of a crystal lattice with respect to \samframe\ are captured using a deformation gradient tensor, \defgrad, as presented in \cite{Bernier:2011uq}.  Using the polar decomposition, 
 \begin{equation}
     \defgrad = \vmat \cdot \rmatc,\; \forall\; \vmat \in Sym^{3\times3},\; \rmatc \in SO^3,
 \end{equation}
-where \rmatc\ is the crystal orientation and \vmat\ is the ``left'' stretch tensor.  The tensor \defgrad\ acts on the {\emph direct} lattice vectors, and takes undistorted lattice vectors in the reference crystal frame, \xtlframe, to reoriented and distroted lattice vectors in the sampel frame, \samframe.  It has been shown that 
+where \rmatc\ is the crystal orientation and \vmat\ is the ``left'' stretch tensor.  The tensor \defgrad\ acts on the {\em direct} lattice vectors, and takes undistorted lattice vectors in the reference crystal frame, \xtlframe, to reoriented and distroted lattice vectors in the sampel frame, \samframe.  \citet{Edmiston2012} have shown that 
 $\defgrad^{-T}=\vmat^{-1}\cdot\rmatc$ 
 can be applied analogously to reciprocal lattice vector components written in \xtlframe.
 Given the reciprocal lattice vector \gvec, with components $\begin{Bmatrix}h&k&l\end{Bmatrix}$ in the reciprocal lattice frame, the fully distorted and orientend components in \labframe\ are then derived as
 \begin{align}
-\labcomps{\gvec} &= \rmats \samcomps{\gvec} \\
-                 &= \rmats \defgrad^{-T} \xtlcomps{\gvec} \\
-                 &= \rmats \defgrad^{-T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \\
-                 &= \rmats \vmat^{-1} \rmatc \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix}.
+\labcomps{\gvec} &= \rmats \samcomps{\gvec} \nonumber\\
+                 &= \rmats \defgrad^{-T} \xtlcomps{\gvec} \nonumber\\
+                 &= \rmats \defgrad^{-T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \nonumber\\
+                 &= \rmats \vmat^{-1} \rmatc \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix}\label{E:gvec_l}.
 \end{align}
 
-\begin{equation}
-  \left(\eye - \bhat \otimes \bhat\right)\cdot\dhat
-\end{equation}
-
-
-Using the parametric equations for a plane (\eqnref{E:plane}) and line (\eqnref{E:line}), we may obtain a relation linking \dhat\ and \Pfour.
+\section{Parametric ray-plane intersection and the transform function}\label{S:transform}
+The coordinates of the points $\Pzero-\Pfour$ (see \figref{F:diffraction_schema}) in the lab frame are
+\begin{align}
+  \labcomps{\Pzero}  &\equiv \begin{bmatrix} 0 & 0 & 0 \end{bmatrix} \\
+  \labcomps{\Pone}   &= \labcomps{\tvecd} \\
+  \labcomps{\Ptwo}   &= \labcomps{\tvecs} \\
+  \labcomps{\Pthree} &= \rmats\samcomps{\tvecc} + \labcomps{\tvecs} \\
+  \labcomps{\Pfour}  &= \rmatd\detcomps{\mbm{\xi}} + \labcomps{\tvecd}
+\end{align}
+Using the parametric equations for a plane (\eqnref{E:plane}) and line (\eqnref{E:line}), we may obtain a system of equations linking \dhat\ and \Pfour.
 \begin{gather}
 \Zd \cdot (\Pfour - \Pone) = 0 \label{E:plane}\\
 \Pfour = \Pthree + u\dhat \label{E:line}
@@ -374,23 +417,51 @@ Substituting for \Pfour\ and rearranging to solve for the scale parameter $u$ yi
     \implies u &= \frac{\Zd \cdot (\Pone - \Pthree)}{\Zd \cdot \dhat
     }
 \end{align}
-
-\begin{align}
-\Pone   &= \tvecd \\
-\Ptwo   &= \tvecs \\
-\Pthree &= \rmats\tvecc + \tvecs \\
-\Pfour  &= \rmatd\mbm{\xi}_{d} + \tvecd
-\end{align}
-
-\begin{equation}
-    \boxed{\detcomps{\Pfour} = \rmats^T \cdot \left[ \labcomps{\Pthree - \Pone} - \frac{\labcomps{\Zd}^T\labcomps{\Pthree - \Pone}}{\labcomps{\Zd}^T\labcomps{\dhat}}\labcomps{\dhat} \right] }
-\end{equation}
-
+Finally, inserting this result into \eqnref{E:line} with some rearrangement yields
 %\begin{equation}
-%\boxed{\detcomps{\Pfour} = \rmatd^T\cdot\labcomps{ \rmats\tvecc+\tvecs-\tvecd 
+%  \detcomps{\Pfour} = \rmatd^T\cdot\labcomps{ \rmats\tvecc+\tvecs-\tvecd 
 %    - \frac{\left(\rmatd\Zl\right)\cdot\left(\rmats\tvecc+\tvecs-\tvecd\right)}
-%           {\left(\rmatd\Zl\right)\cdot\dhat}\cdot\dhat } }
+%           {\left(\rmatd\Zl\right)\cdot\dhat}\cdot\dhat },
 %\end{equation}
+%or in component form:
+\begin{equation}
+  \boxed{\detcomps{\Pfour} = \rmats^T \cdot \left[ \labcomps{\Pthree - \Pone} 
+    - \frac{\labcomps{\Zd}^T\labcomps{\Pthree - \Pone}}
+           {\labcomps{\Zd}^T\labcomps{\dhat}}\labcomps{\dhat} \right] },
+\end{equation}
+where $\labcomps{\dhat}$ is obtained from \eqnref{E:dhat} and \eqnref{E:gvec_l} as
+\begin{align}
+  \dhati &= \left(\delta_{ij} - 2\ghati\ghatj\right)\cdot\bhatj
+\end{align}
+%%
+The action of the oscillation in a canted configuration is represented by the rotation \rmats\, where
+\begin{align}
+	\rmats &= \rmat{\chi}{\Xl}\rmat{\omega}{\Yl}\\
+	&= \left[\begin{array}{rrr}1&0&0\\0&\cox&-\six\\0&\six&\cox\end{array}\right]
+	   \left[\begin{array}{ccc}\cow&0&\siw\\0&1&0\\-\siw&0&\cow\end{array}\right] \nonumber\\
+	&= \left[\begin{array}{ccc} 
+	       \cow     &  0   &      \siw \\
+	       \six\siw & \cox & -\six\cow \\
+	      -\cox\siw & \six &   \cox\cow
+	   \end{array}\right] \nonumber
+\end{align}
+the LHS of \eqnref{} gives $\{\rmatd\}_{ji}$
+\begin{align}
+	\sin\theta &= -\cox\siw \left( \left[ (1-\cop)\nZ^2 + \cop \right]\hgZ \right. \\
+	&\qquad\qquad\qquad\quad\;+ \left[ (1-\cop)\nZO - \sip\;\nT \right]\hgO \nonumber\\
+	&\qquad\qquad\qquad\quad\;+ \left. \left[ (1-\cop)\nZT + \sip\;\nO \right]\hgT \right) \nonumber\\
+	&\quad+ \six \left( \left[ (1-\cop)\nZO + \sip\;\nT \right]\hgZ \right. \nonumber\\
+	&\qquad\qquad\quad+ \left[ (1-\cop)\nO^2 + \cop \right]\hgO\nonumber\\     
+	&\qquad\qquad\quad+ \left. \left[(1-\cop)\nOT - \sip\;\nZ \right]\hgT \right)\nonumber\\
+	&\quad+\cox\cow\left( \left[ (1-\cop)\nZT - \sip\;\nO \right] \hgZ \right. \nonumber\\
+	&\qquad\qquad\qquad\quad\;+ \left[ (1-\cop)\nOT + \sip\;\nZ \right]\hgO \nonumber\\
+	&\qquad\qquad\qquad\quad\;+ \left. \left[(1-\cop)\nT^2 + \cop\right]\hgT\right) \nonumber
+\end{align}
+%%
+
+
+\bibliographystyle{abbrvnat}
+\bibliography{hedm}
 
 \end{document}
 
