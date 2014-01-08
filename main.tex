@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{mathtools}
 \usepackage[bookmarks=true, colorlinks=true]{hyperref}
 \usepackage{setspace}
 % Graphics
@@ -37,14 +38,15 @@
 \newcommand{\rmats}{\ensuremath{\mathsf{R}_s}}
 \newcommand{\rmatc}{\ensuremath{\mathsf{R}_c}}
 \newcommand{\bmat}{\ensuremath{\mathsf{B}}}
-\newcommand{\gvec}{\ensuremath{\mbm{\mathrm{G}}_{hkl}}}
-\newcommand{\ghat}{\ensuremath{\hat{\mbm{\mathrm{G}}}_{hkl}}}
+\newcommand{\gvec}{\ensuremath{\mbm{\mathrm{G}}}}
+\newcommand{\ghat}{\ensuremath{\hat{\mbm{\mathrm{G}}}}}
 \newcommand{\bhat}{\ensuremath{\hat{\mbm{\mathrm{b}}}}}
-\newcommand{\dhat}{\ensuremath{\hat{\mbm{\mathrm{d}}}_{hkl}}}
+\newcommand{\dhat}{\ensuremath{\hat{\mbm{\mathrm{d}}}}}
 \newcommand{\ehat}{\ensuremath{\hat{\mbm{\mathrm{e}}}}}
 \newcommand{\eye}{\ensuremath{\mbm{\mathrm{I}}}}
 \newcommand{\vmat}{\ensuremath{\mbm{\mathrm{V}}}}
 \newcommand{\defgrad}{\ensuremath{\mbm{\mathrm{F}}}}
+\newcommand{\detpt}{\ensuremath{\mbm{\mathrm{x}}}}
 
 \newcommand{\ghati}{\ensuremath{\hat{G}_{i}}}
 \newcommand{\bhati}{\ensuremath{\hat{b}_{i}}}
@@ -86,6 +88,7 @@
 \newcommand{\detcomps}[1]{\left[#1\right]_d}
 \newcommand{\samcomps}[1]{\left[#1\right]_s}
 \newcommand{\xtlcomps}[1]{\left[#1\right]_c}
+\newcommand{\rcpcomps}[1]{\left[#1\right]_*}
 
 % cross-references
 \newcommand{\figref}[1]{Figure~\ref{#1}}
@@ -250,23 +253,23 @@ cartesian coordinate system \detframe\ is attached to each independent
 detector element as follows: the origin \Pone\ is coincident with the
 centroid of the active surface, and \Zd\ represents the plane normal.
 The \Xd,\Yd\ directions are typically aligned with the horizontal and
-vertical pixel-relative directions on each panel.  Vector components
+vertical pixel-relative directions on each panel.  The coordinates of points 
 in each independent detector coordinate system, \detframe\, are
-related to components in \labframe\ via a simple affine
+related to coordinated in \labframe\ via a simple affine
 transformation:
 \begin{gather}
-  \labcomps{\mbm{\xi}} = \rmatd\cdot\detcomps{\mbm{\xi}} + \labcomps{\tvecd}
+  \labcomps{\detpt} = \rmatd\cdot\detcomps{\detpt} + \labcomps{\tvecd}
 \end{gather}
 where $\tvecd = \Pone - \Pzero$ and the notation
-$\labcomps{\mbm{\xi}}$ indicates the components of $\mbm{\xi}$ in
+$\labcomps{\detpt}$ indicates the components of $\detpt$ in
 \labframe.  Because only planar detectors are considered, the
 components of a detector-relative point are of the form
-$\detcomps{\mbm{\xi}}=\begin{bmatrix}x&y&0\end{bmatrix}$.
+$\detcomps{\detpt}=[x\; y\; 0]$.
 
 \subsection{Sample Frame}
 The sample frame provides a basis in which to represent a uniquely
 oriented and located specimen.  For the arbitrarily defined
-sample-relative vector $\mathbf{S}$, components in \samframe\ are
+sample-relative vector $\mathbf{S}$, coordinates in \samframe\ are
 connected to \labframe\ via the affine transformation
 \begin{equation}
   \labcomps{\mathbf{s}} = \rmats\cdot\samcomps{\mathbf{s}} + \labcomps{\tvecs}  
@@ -342,7 +345,7 @@ convention'' where the prefactor of $2\pi$ is omitted.} as follows:
 %%
 where $\cellVol = \cellVolExpr$ represents the volume of the primitive
 cell.  The change-of-basis matrix, \bmat, that takes vector components in the
-reciprocal lattice to the crystal frame is formulated as
+reciprocal lattice frame to the crystal frame is formulated as
 %%
 \begin{align}
   \bmat &= \xtlcomps{\begin{matrix} \rcella & \rcellb & \rcellc \end{matrix}} \label{E:bmatrix}\\ 
@@ -375,26 +378,29 @@ Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  Th
 \dhat &= \mathsf{R}\left(\pi, \ghat\right)\cdot\left(-\bhat\right) \nonumber\\
       &= \left(2\ghat\otimes\ghat - \eye\right)\cdot\left(-\bhat\right) \nonumber\\
       &= \left(\eye - 2\ghat\otimes\ghat\right)\cdot\bhat \label{E:dhat}\\
-      & \mbox{where } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\|,  \label{E:braggCondition}\\
+      & \mbox{where } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\| = -\sin{\theta},  \label{E:braggCondition}\\
       & \dhat\cdot\Zd < 0,  \label{E:intersectsDetector}
 \end{align}
-$\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propagation direction.  \eqnref{E:braggCondition} is the bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an addition condition that must be satisfied in the instrument for\Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is, however, quite straightforward and not explicitly stated in this document.
+$\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propagation direction.  \eqnref{E:braggCondition} is the bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an additional condition that must be satisfied in the instrument for \Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is, however, quite straightforward and not explicitly stated in this document.
 
 \subsection{Representing crystal orientation and strain}
-A reciprocal lattice vector is typically representend by its components in the reference (read: undistorted) reciprocal lattice frame, $\begin{Bmatrix}h&k&l\end{Bmatrix}$.  The change-of-basis matrix, \bmat, that takes components in the reciprocal lattice to \xtlframe\ was given by \eqnref{E:bmatrix}  above (\secref{S:conventions}).  The effects of both finite distortion and rotation of a crystal lattice with respect to \samframe\ are captured using a deformation gradient tensor, \defgrad, as presented in \cite{Bernier:2011uq}.  Using the polar decomposition, 
+A reciprocal lattice vector, \gvec, is typically representend by its components in the reference (read: undistorted) reciprocal lattice frame, $\rcpcomps{\gvec}=[h\; k\; l]$.  The change-of-basis matrix, \bmat, that takes components in the reciprocal lattice to \xtlframe\ was given by \eqnref{E:bmatrix} above (\secref{S:conventions}).  The effects of both finite distortion and rotation of a crystal lattice with respect to \samframe\ are captured using a deformation gradient tensor, \defgrad, as presented in \cite{Bernier:2011uq}.  The tensor \defgrad\ acts on the {\em direct} lattice vectors, and takes undistorted lattice vectors in the reference crystal frame, \xtlframe, to reoriented and distorted lattice vectors in the sample frame, \samframe.  Using the polar decomposition, 
 \begin{equation}
-    \defgrad = \vmat \cdot \rmatc,\; \forall\; \vmat \in Sym^{3\times3},\; \rmatc \in SO^3,
+    \defgrad = \vmat \rmatc,\; \forall\; \vmat \in Sym^{3\times3},\; \rmatc \in SO^3,
 \end{equation}
-where \rmatc\ is the crystal orientation and \vmat\ is the ``left'' stretch tensor.  The tensor \defgrad\ acts on the {\em direct} lattice vectors, and takes undistorted lattice vectors in the reference crystal frame, \xtlframe, to reoriented and distroted lattice vectors in the sampel frame, \samframe.  \citet{Edmiston2012} have shown that 
-$\defgrad^{-T}=\vmat^{-1}\cdot\rmatc$ 
+where \rmatc\ is the crystal orientation and \vmat\ is the ``left'' stretch tensor.  \citet{Edmiston2012} have shown that 
+$\defgrad^{-T}=\vmat^{-1}\rmatc$ 
 can be applied analogously to reciprocal lattice vector components written in \xtlframe.
-Given the reciprocal lattice vector \gvec, with components $\begin{Bmatrix}h&k&l\end{Bmatrix}$ in the reciprocal lattice frame, the fully distorted and orientend components in \labframe\ are then derived as
+Given the reciprocal lattice vector \gvec, with components $\rcpcomps{\gvec}=[h\; k\; l]$ in the reciprocal lattice frame, the fully distorted and orientend components in \labframe\ are then derived as
 \begin{align}
 \labcomps{\gvec} &= \rmats \samcomps{\gvec} \nonumber\\
-                 &= \rmats \defgrad^{-T} \xtlcomps{\gvec} \nonumber\\
-                 &= \rmats \defgrad^{-T} \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix} \nonumber\\
-                 &= \rmats \vmat^{-1} \rmatc \bmat \begin{Bmatrix}h\\k\\l\end{Bmatrix}\label{E:gvec_l}.
+                 &= \rmats \samcomps{\defgrad^{-T}} \xtlcomps{\gvec} \nonumber\\
+                 &= \rmats \samcomps{\defgrad^{-T}} \bmat \rcpcomps{\gvec} \nonumber\\
+        \Aboxed{ &= \rmats \samcomps{\vmat^{-1}} \rmatc \bmat \rcpcomps{\gvec} }\label{E:gvec_l},
 \end{align}
+The three crystal orientation degrees of freemdom are wrapped up in \rmatc, while the six that represent strain are contained in \vmat.  
+
+Functionally, the orientation degrees of freedom can be decoupled from the strain (and position) degrees of freedom in the initial analysis.  This ``orientation indexing'' procedure essentially consists of testing discrete orientations $\mathsf{R}(\phi, \mbm{n})$, for a set of feasible \gvec\ and checking for intensity at the associated detector points \Pfour.  For the rotation method, the oscillation angle $\omega$ must be calculated for each feasible \gvec as well; this will be discussed in \secref{S:oscill}.
 
 \section{Parametric ray-plane intersection and the transform function}\label{S:transform}
 The coordinates of the points $\Pzero-\Pfour$ (see \figref{F:diffraction_schema}) in the lab frame are
@@ -403,7 +409,7 @@ The coordinates of the points $\Pzero-\Pfour$ (see \figref{F:diffraction_schema}
   \labcomps{\Pone}   &= \labcomps{\tvecd} \\
   \labcomps{\Ptwo}   &= \labcomps{\tvecs} \\
   \labcomps{\Pthree} &= \rmats\samcomps{\tvecc} + \labcomps{\tvecs} \\
-  \labcomps{\Pfour}  &= \rmatd\detcomps{\mbm{\xi}} + \labcomps{\tvecd}
+  \labcomps{\Pfour}  &= \rmatd\detcomps{\detpt} + \labcomps{\tvecd}
 \end{align}
 Using the parametric equations for a plane (\eqnref{E:plane}) and line (\eqnref{E:line}), we may obtain a system of equations linking \dhat\ and \Pfour.
 \begin{gather}
@@ -434,6 +440,7 @@ where $\labcomps{\dhat}$ is obtained from \eqnref{E:dhat} and \eqnref{E:gvec_l} 
   \dhati &= \left(\delta_{ij} - 2\ghati\ghatj\right)\cdot\bhatj
 \end{align}
 %%
+\section{Solving for the oscillation angle, $\omega$}\label{S:oscill}
 The action of the oscillation in a canted configuration is represented by the rotation \rmats\, where
 \begin{align}
 	\rmats &= \rmat{\chi}{\Xl}\rmat{\omega}{\Yl}\\
@@ -443,19 +450,21 @@ The action of the oscillation in a canted configuration is represented by the ro
 	       \cow     &  0   &      \siw \\
 	       \six\siw & \cox & -\six\cow \\
 	      -\cox\siw & \six &   \cox\cow
-	   \end{array}\right] \nonumber
+	   \end{array}\right] . \nonumber
 \end{align}
-the LHS of \eqnref{} gives $\{\rmatd\}_{ji}$
+From \eqnref{E:gvec_l} we have
+\begin{equation}
+    \samcomps{\gvec} = \samcomps{\defgrad^{-T}}\rmatc\bmat\rcpcomps{\gvec} \nonumber
+\end{equation}
+By writing the bragg condition (\eqnref{E:braggCondition}) in terms of lab-frame components by multiplying by the normalized components above \rmats\ leads to relation of the form 
+\begin{equation}
+    a \siw + b \cow = c \nonumber
+\end{equation}
+where
 \begin{align}
-	\sin\theta &= -\cox\siw \left( \left[ (1-\cop)\nZ^2 + \cop \right]\hgZ \right. \\
-	&\qquad\qquad\qquad\quad\;+ \left[ (1-\cop)\nZO - \sip\;\nT \right]\hgO \nonumber\\
-	&\qquad\qquad\qquad\quad\;+ \left. \left[ (1-\cop)\nZT + \sip\;\nO \right]\hgT \right) \nonumber\\
-	&\quad+ \six \left( \left[ (1-\cop)\nZO + \sip\;\nT \right]\hgZ \right. \nonumber\\
-	&\qquad\qquad\quad+ \left[ (1-\cop)\nO^2 + \cop \right]\hgO\nonumber\\     
-	&\qquad\qquad\quad+ \left. \left[(1-\cop)\nOT - \sip\;\nZ \right]\hgT \right)\nonumber\\
-	&\quad+\cox\cow\left( \left[ (1-\cop)\nZT - \sip\;\nO \right] \hgZ \right. \nonumber\\
-	&\qquad\qquad\qquad\quad\;+ \left[ (1-\cop)\nOT + \sip\;\nZ \right]\hgO \nonumber\\
-	&\qquad\qquad\qquad\quad\;+ \left. \left[(1-\cop)\nT^2 + \cop\right]\hgT\right) \nonumber
+    a = \samcomps{\hgT}\labcomps{\hbZ} &+ \six\samcomps{\hgZ}\labcomps{\hbO} - \cox\samcomps{\hgZ}\labcomps{\hbT}\\
+    b = \samcomps{\hgZ}\labcomps{\hbZ} &- \six\samcomps{\hgT}\labcomps{\hbO} + \cox\samcomps{\hgT}\labcomps{\hbT}\\
+    c =                  -\sin{\theta} &- \cox\samcomps{\hgO}\labcomps{\hbO} - \six\samcomps{\hgO}\labcomps{\hbT}
 \end{align}
 %%
 

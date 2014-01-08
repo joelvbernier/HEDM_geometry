@@ -251,7 +251,7 @@ def gen_sk(fname, det_size, det_pt, eVec,
         '      { sweep[linecolor=black,arrows=->]{                                                     \n' + \
         '        n_segs, rotate(tth/n_segs, (p1), [tthvec])}(bpt) }                                    \n' + \
         '      { line[linewidth=0.2pt,linecolor=magenta,linestyle=dashed](bptd_m)(bptd_p)} }           \n' + \
-        '  special |\uput[u ]#1{$\hat{\mathbf{G}}_{hkl}$}                                              \n' + \
+        '  special |\uput[u ]#1{$\hat{\mathbf{G}}$}                                                    \n' + \
         '           \uput[r ]#2{$\hat{\mathbf{e}}$}                                                    \n' + \
         '           \uput[r ]#3{$\hat{\mathbf{b}}$}                                                    \n' + \
         '           \uput[dr]#4{$\mathrm{P}_3$}                                                        \n' + \
