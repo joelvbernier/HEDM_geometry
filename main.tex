@@ -221,7 +221,7 @@ detector frame is of the form $\mathbf{A}(\mathbf{x})\cdot\mathbf{x} =
 \mathbf{y}$.  The application of focus in this note is the rotation
 method; this implies a monochromatic incident beam and a sample frame
 that rotates about an axis that is nominally perpendicular to the
-incident beam.
+incident beam, with provision for finite deviations.
 \end{abstract}
 
 \section{Coordinate Systems}
@@ -431,18 +431,18 @@ Finally, inserting this result into \eqnref{E:line} with some rearrangement yiel
 %\end{equation}
 %or in component form:
 \begin{equation}
-  \boxed{\detcomps{\Pfour} = \rmats^T \cdot \left[ \labcomps{\Pthree - \Pone} 
+  \boxed{\detcomps{\Pfour} = \rmatd^T \cdot \left[ \labcomps{\Pthree - \Pone} 
     - \frac{\mathrm{dot}\left(\labcomps{\Zd}^T,\; \labcomps{\Pthree - \Pone}\right)}
            {\mathrm{dot}\left(\labcomps{\Zd}^T,\; \labcomps{\dhat}\right)}\labcomps{\dhat} \right] }, \label{E:Pfour}
 \end{equation}
-where $\labcomps{\dhat}$ is obtained from \eqnref{E:dhat} and \eqnref{E:gvec_l}.
+where $\labcomps{\dhat}$ is obtained from \eqnref{E:dhat} and \eqnref{E:gvecLab}.
 % as
 %\begin{align}
 %  \dhati &= \left(\delta_{ij} - 2\ghati\ghatj\right)\cdot\bhatj
 %\end{align}
 %%
 \section{Solving for the oscillation angle, $\omega$}\label{S:oscill}
-The action of the oscillation in a canted configuration is represented by the rotation \rmats\, where
+For a monochromatic schema using the rotation method, the action of the oscillation in a canted configuration is represented by the rotation \rmats\, where
 \begin{align}
 	\rmats &= \rmat{\chi}{\Xl}\rmat{\omega}{\Yl} \label{E:rmats} \\
 	&= \left[\begin{array}{rrr}1&0&0\\0&\cox&-\six\\0&\six&\cox\end{array}\right]
@@ -453,7 +453,7 @@ The action of the oscillation in a canted configuration is represented by the ro
 	      -\cox\siw & \six &   \cox\cow
 	   \end{array}\right] . \nonumber
 \end{align}
-From \eqnref{E:gvec_l} we have
+From \eqnref{E:gvecLab} we have
 \begin{equation}
     \samcomps{\gvec} = \samcomps{\defgrad^{-T}}\bmat\rcpcomps{\gvec} \label{E:ghatInSamp}
 \end{equation}
@@ -461,7 +461,7 @@ By writing the bragg condition (\eqnref{E:braggCondition}) in terms of lab-frame
 \begin{align}
     a \siw + b \cow &= c \label{E:trig}\\
                     &\equiv R\sin{\left(x+\alpha\right)} \label{E:identity}\\
-                    \mbox{where } R\equiv\sqrt{a^2 + b^2} &\mbox{, } \alpha\equiv\mathrm{atan2}(b, a),
+                    \mbox{where } R\equiv\sqrt{a^2 + b^2} &\mbox{, and } \alpha\equiv\mathrm{atan2}(b, a),
 \end{align}
 and 
 %%
@@ -480,10 +480,10 @@ These yield the solutions
         \end{array}
     \right. \label{E:omegas}
 \end{equation}
-which are either unique (both sides of the diffraction cone), a double root (tangent to the diffraction cone) or do not exist ($|\frac{c}{\sqrt{a^2 + b^2}}| > 1$, can't intersect diffraction cone).
+which are either unique (both sides of the diffraction cone), a double root (tangent to the diffraction cone -- typically not considered) or do not exist ($|\frac{c}{\sqrt{a^2 + b^2}}| > 1$, can't intersect diffraction cone).
 
 \section{Summary}\label{S:summary}
-The complete procedure for finding the detector coordinates of all reflections for a specifically oriented, strained crystal athe the position \Pthree\ consists of the following procedure:
+The complete procedure for finding the detector coordinates of all reflections for a specifically oriented, strained crystal at the the position \Pthree\ consists of the following procedure:
 \begin{enumerate}
 \item Generate $[h\; k\; l]$ up to the relevant order (determined by geometry and wavelength of the \xrays) \\
 \item Calculate the set of reciprocal lattice vector components in \samframe\ using \eqnref{E:ghatInSamp} \\
