@@ -236,7 +236,7 @@ fundamental coordinate systems:
   \item the {\bf crystal} frame, \xtlframe.
 \end{itemize}
 
-\subsection{Laboratory Frame}
+\subsection{Laboratory Frame}\label{S:laboratory}
 The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
 non-neglible physical extent in the lab frame, typically possessing a
@@ -244,8 +244,35 @@ rectangular or circular cross-section.  The beam direction is
 represented by the unit vector \bhat, and the centroid of its
 cross-section is defined to coincide with the origin of \labframe,
 labeled \Pzero.
+\subsubsection{The Beam Frame}
+When working with diffraction geometry, it becomes very useful to associate detector-relative cartesian coordinates with a bragg angle, $2\theta$, and azimuth, $\eta$.  In the present notation, the bragg angle (see \eqnref{E:braggCondition}) is defined as
+\begin{equation}
+  2\theta \equiv \arccos{\left( \bhat \cdot \dhat \right)}
+\end{equation}
+where \dhat\ is the unit vector along the diffracted beam 
+\begin{displaymath}
+  \dhat \equiv \frac{\Pfour-\Pthree}{\|\Pfour-\Pthree\|}
+\end{displaymath}
+(see \secref{S:detector}, \ref{S:crystal})
+\begin{equation}
+  \eta = \arccos{\left(\ehat \cdot \left( \eye - \bhat \otimes \bhat \right)\cdot\dhat\right)}
+\end{equation}
 
-\subsection{Detector Frame}
+The definition of a reference azimuth is arbitrary
+\begin{equation}
+  \left[ \ehat,\; -\bhat\times\ehat,\; -\bhat \right]
+  \label{E:etaFrame}
+\end{equation}
+
+\begin{equation}
+  \begin{Bmatrix}
+    \cos\eta \cos\theta \\
+    \sin\eta \cos\theta \\
+    \sin\theta
+  \end{Bmatrix}
+\end{equation}
+
+\subsection{Detector Frame}\label{S:detector}
 A typical detector element has a planar active area with a rectangular
 shape.  A complete instrument may contain several independent
 detectors with unique orientations and placements in the lab frame.  A
@@ -266,7 +293,7 @@ $\labcomps{\detpt}$ indicates the components of $\detpt$ in
 components of a detector-relative point are of the form
 $\detcomps{\detpt}=[x\; y\; 0]$.
 
-\subsection{Sample Frame}
+\subsection{Sample Frame}\label{S:sample}
 The sample frame provides a basis in which to represent a uniquely
 oriented and located specimen.  For the arbitrarily defined
 sample-relative vector $\mathbf{S}$, coordinates in \samframe\ are
@@ -286,7 +313,7 @@ $\omega$.  The full model has a sufficient number of degrees of
 freedom to preclude the need for a third rotational degree of freedom
 for \samframe.
 
-\subsection{Crystal Frame}
+\subsection{Crystal Frame}\label{S:crystal}
 The crystal frame represent a local RHON coordinate system attached to
 the lattice of a single-crystal domain in the sample.  In the context
 of far-field HEDM, the origin of \xtlframe, labeled \Pthree,
@@ -400,7 +427,7 @@ Given the reciprocal lattice vector \gvec, with components $\rcpcomps{\gvec}=[h\
 \end{align}
 The three crystal orientation degrees of freemdom are wrapped up in \rmatc, while the six that represent strain are contained in \vmat.  
 
-Functionally, the orientation degrees of freedom can be decoupled from the strain (and position) degrees of freedom in the initial analysis.  This ``orientation indexing'' procedure essentially consists of testing discrete orientations $\mathsf{R}(\phi, \mbm{n})$, for a set of feasible \gvec\ and checking for intensity at the associated detector points \Pfour.  For the rotation method, the oscillation angle $\omega$ must be calculated for each feasible \gvec as well; this will be discussed in \secref{S:oscill}.
+Functionally, the orientation degrees of freedom can be decoupled from the strain (and position) degrees of freedom in the initial analysis.  This ``orientation indexing'' procedure essentially consists of testing discrete orientations $\mathsf{R}(\phi, \mbm{n})$, for a set of feasible \gvec\ and checking for intensity at the associated detector points \Pfour.  For the rotation method, the oscillation angle $\omega$ must be calculated for each feasible \gvec\ as well; this will be discussed in \secref{S:oscill}.
 
 \section{Parametric ray-plane intersection and the transform function}\label{S:transform}
 The coordinates of the points $\Pzero-\Pfour$ (see \figref{F:diffraction_schema}) in the lab frame are
