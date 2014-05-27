@@ -68,11 +68,6 @@
 \newcommand{\Zl}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_l}}
 \newcommand{\labframe}{\ensuremath{\left\{\Xl\Yl\Zl\right\}}}
 
-\newcommand{\Xb}{\ensuremath{\hat{\mbm{\mathrm{X}}}_b}}
-\newcommand{\Yb}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_b}}
-\newcommand{\Zb}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_b}}
-\newcommand{\beamframe}{\ensuremath{\left\{\Xb\Yb\Zb\right\}}}
-
 \newcommand{\Xd}{\ensuremath{\hat{\mbm{\mathrm{X}}}_d}}
 \newcommand{\Yd}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_d}}
 \newcommand{\Zd}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_d}}
@@ -90,7 +85,6 @@
 
 % vector components
 \newcommand{\labcomps}[1]{\left[#1\right]_l}
-\newcommand{\beamcomps}[1]{\left[#1\right]_b}
 \newcommand{\detcomps}[1]{\left[#1\right]_d}
 \newcommand{\samcomps}[1]{\left[#1\right]_s}
 \newcommand{\xtlcomps}[1]{\left[#1\right]_c}
@@ -233,16 +227,15 @@ incident beam, with provision for finite deviations.
 \section{Coordinate Systems}
 
 A single-detector diffraction measurement schema is illustrated in
-\figref{F:diffraction_schema}.  For genearlity we utilize five
+\figref{F:diffraction_schema}.  For genearlity we utilize four
 fundamental coordinate systems:
 \begin{itemize}
   \item the {\bf laboratory} frame, \labframe;
-  \item the {\bf beam} frame, \beamframe;
   \item the {\bf detector} frame(s), $\detframe_i$;
   \item the {\bf sample} frame, \samframe; and
   \item the {\bf crystal} frame, \xtlframe.
 \end{itemize}
-\newpage
+
 \subsection{Laboratory Frame}\label{S:laboratory}
 The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
@@ -251,33 +244,32 @@ rectangular or circular cross-section.  The beam direction is
 represented by the unit vector \bhat, and the centroid of its
 cross-section is defined to coincide with the origin of \labframe,
 labeled \Pzero.
-
-\subsection{Beam Frame}
+\subsubsection{The Beam Frame}
 When working with diffraction geometry, it becomes very useful to associate detector-relative cartesian coordinates with a bragg angle, $2\theta$, and azimuth, $\eta$.  In the present notation, the bragg angle (see \eqnref{E:braggCondition}) is defined as
 \begin{equation}
   2\theta \equiv \arccos{\left( \bhat \cdot \dhat \right)}
 \end{equation}
 where \dhat\ is the unit vector along the diffracted beam 
-\begin{equation}
+\begin{displaymath}
   \dhat \equiv \frac{\Pfour-\Pthree}{\|\Pfour-\Pthree\|}
-\end{equation}
-and \bhat\ is the propagation direction of the incident beam, or the unit incident wavevector (see \secref{S:detector}, \ref{S:crystal}).  Given the axisymmetry inherent in the definition of the diffraction condition, it also becomes useful to describe \dhat\ in terms of an azimuthal angle, $\eta$; this requires defining a reference azimuth, which is done using a vector \ehat\ perpendicular to \bhat.  In terms of \ehat, \bhat, and \dhat\
+\end{displaymath}
+(see \secref{S:detector}, \ref{S:crystal})
 \begin{equation}
-  \eta = \arccos{\left(\ehat \cdot \left( \eye - \bhat \otimes \bhat \right)\cdot\dhat\right)}.
+  \eta = \arccos{\left(\ehat \cdot \left( \eye - \bhat \otimes \bhat \right)\cdot\dhat\right)}
 \end{equation}
 
-One benefit of the beam frame is that the components of a unit reciprocal lattice vector, \ghat, satisfying the bragg condition can be written exclusively in terms of $2\theta$ and $\eta$
+The definition of a reference azimuth is arbitrary
 \begin{equation}
-  \beamcomps{\ghat}=\begin{Bmatrix}
+  \left[ \ehat,\; -\bhat\times\ehat,\; -\bhat \right]
+  \label{E:etaFrame}
+\end{equation}
+
+\begin{equation}
+  \begin{Bmatrix}
     \cos\eta \cos\theta \\
     \sin\eta \cos\theta \\
     \sin\theta
   \end{Bmatrix}
-\end{equation}
-The change of basis matrix taking components in \beamframe\ to \labframe\ is defined as
-\begin{equation}
-  \mathsf{r}_b = \left[ \ehat,\; -\bhat\times\ehat,\; -\bhat \right].
-  \label{E:etaFrame}
 \end{equation}
 
 \subsection{Detector Frame}\label{S:detector}
@@ -336,7 +328,7 @@ where $\tvecc=\Pthree-\Ptwo$.  The forumaltion of diffracted beam vectors for a 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=\textwidth]{new_geometry.pdf}
-  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to create the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour\ are shown.  The azimuthal angle, $\eta$, of \ghat\ about \bhat\ is not shown; however, the reference azimuth is, denoted by the unit vector \ehat. }
+  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to cread the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour\ are shown.  The azimuthal angle, $\eta$, of \ghat\ about \bhat\ is not shown; however, the reference azimuth is, denoted by the unit vector \ehat. }
   \label{F:diffraction_schema}
 \end{figure}
 %%
@@ -433,7 +425,7 @@ Given the reciprocal lattice vector \gvec, with components $\rcpcomps{\gvec}=[h\
                  &= \rmats \samcomps{\defgrad^{-T}} \bmat \rcpcomps{\gvec} \nonumber\\
         \Aboxed{ &= \rmats \samcomps{\vmat^{-1}} \rmatc \bmat \rcpcomps{\gvec} }\label{E:gvecLab},
 \end{align}
-The three crystal orientation degrees of freedom are wrapped up in \rmatc, while the six that represent strain are contained in \vmat.  
+The three crystal orientation degrees of freemdom are wrapped up in \rmatc, while the six that represent strain are contained in \vmat.  
 
 Functionally, the orientation degrees of freedom can be decoupled from the strain (and position) degrees of freedom in the initial analysis.  This ``orientation indexing'' procedure essentially consists of testing discrete orientations $\mathsf{R}(\phi, \mbm{n})$, for a set of feasible \gvec\ and checking for intensity at the associated detector points \Pfour.  For the rotation method, the oscillation angle $\omega$ must be calculated for each feasible \gvec\ as well; this will be discussed in \secref{S:oscill}.
 
@@ -533,4 +525,3 @@ The complete procedure for finding the detector coordinates of all reflections f
 
 \end{document}
 
-\
