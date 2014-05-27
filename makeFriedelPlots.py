@@ -58,7 +58,8 @@ axes1.set_yticks(np.r_[-180, -120, -60, -tth0[0], 0, tth0[0], 60, 120, 180]*d2r)
 axes1.set_yticklabels(['$-\pi$', '$-2\pi/3$', '$-\pi/3$',
                       '$-2\\theta$', '$0$', '$2\\theta$',
                       '$\pi/3$', '$2\pi/3$', '$\pi$'])
-fig1.show()
+# fig1.show()
+fig1.savefig("friedel_omegas.pdf", dpi=None, orientation='landscape')
 
 axes2.set_xlabel('starting azimuth, $\eta_0$')
 axes2.set_ylabel('azimuthal difference, $\eta_{FP} - \pi$')
@@ -74,4 +75,6 @@ axes2.set_yticks(np.arange(-3, 4)*tth0[0]*d2r)
 axes2.set_yticklabels(['-6\\theta$', '-4\\theta', '-2\\theta', '$0$', '2\\theta', '4\\theta', '6\\theta'])
 axes2.grid(True)
 
-fig2.show()
+# fig2.show()
+fig2.savefig("friedel_etas.pdf", dpi=None, orientation='landscape')
+
