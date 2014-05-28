@@ -72,9 +72,10 @@ axes2.set_xticklabels(['$-\pi$', '$-3\pi/4$', '$-\pi/2$',
                       '$-\pi/4$', '$0$', '$\pi/4$',
                       '$\pi/2$', '$3\pi/4$', '$\pi$'])
 axes2.set_yticks(np.arange(-3, 4)*tth0[0]*d2r)
-axes2.set_yticklabels(['-6\\theta$', '-4\\theta', '-2\\theta', '$0$', '2\\theta', '4\\theta', '6\\theta'])
+axes2.set_yticklabels(['$-6\\theta$', '$-4\\theta$', '$-2\\theta$', 
+                       '$0$', 
+                       '$2\\theta$', '$4\\theta$', '$6\\theta$'])
 axes2.grid(True)
 
 # fig2.show()
 fig2.savefig("friedel_etas.pdf", dpi=None, orientation='landscape')
-
