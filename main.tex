@@ -68,6 +68,11 @@
 \newcommand{\Zl}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_l}}
 \newcommand{\labframe}{\ensuremath{\left\{\Xl\Yl\Zl\right\}}}
 
+\newcommand{\Xb}{\ensuremath{\hat{\mbm{\mathrm{X}}}_{k_i}}}
+\newcommand{\Yb}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_{k_i}}}
+\newcommand{\Zb}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_{k_i}}}
+\newcommand{\beamframe}{\ensuremath{\left\{\Xb\Yb\Zb\right\}}}
+
 \newcommand{\Xd}{\ensuremath{\hat{\mbm{\mathrm{X}}}_d}}
 \newcommand{\Yd}{\ensuremath{\hat{\mbm{\mathrm{Y}}}_d}}
 \newcommand{\Zd}{\ensuremath{\hat{\mbm{\mathrm{Z}}}_d}}
@@ -85,6 +90,7 @@
 
 % vector components
 \newcommand{\labcomps}[1]{\left[#1\right]_l}
+\newcommand{\beamcomps}[1]{\left[#1\right]_b}
 \newcommand{\detcomps}[1]{\left[#1\right]_d}
 \newcommand{\samcomps}[1]{\left[#1\right]_s}
 \newcommand{\xtlcomps}[1]{\left[#1\right]_c}
@@ -211,21 +217,24 @@
 \maketitle
 \begin{abstract}
 A complete and general geometric model for parameterizing diffraction
-measurements with one or more planar detectors is presented.  It includes provisions for describing both mono- and poly-chromatic schemas for {\em collimated} incident beams (\ie\ negligable beam divergence).  Detectors are modeled as polygonal planar bodies, and their shapes and placements in the reference frame are completely arbitrary.  The mapping that takes an admissable reciprocal lattice vector in the crystal frame to pixel coordinates in a given
-detector frame is of the form $\mathbf{A}(\mathbf{x})\cdot\mathbf{x} =
-\mathbf{y}$.  The application of focus in this note is the rotation
-method; this implies a monochromatic incident beam and a sample frame
-that rotates about an axis that is nominally perpendicular to the
-incident beam, with provision for finite deviations.
+measurements with one or more planar detectors is presented.  It includes provisions for describing both mono- and poly-chromatic schemes for {\em collimated} incident beams (\ie\ negligable beam divergence), although extensions to divergent sources are discussed.  Detectors are modeled as polygonal planar bodies, and their shapes and placements in the reference frame are completely arbitrary.  The mapping that takes an admissable reciprocal lattice vector in the crystal frame to pixel coordinates in a specific detector frame is of the form $\mathbf{A}(\mathbf{x})\cdot\mathbf{x} =
+\mathbf{y}$.  Application to the rotation method, including the effects of non-perpendicularith of the rotation axis to the incident beam wavevector, is presented in detail.
 \end{abstract}
+
+\section{Background \& Motivation}
+
+With many different measurement schemes, the rise of 3DXRD and HEDM, multi-panel instruments.
+%
+Data reduction software, standardization
 
 \section{Coordinate Systems}
 
 A single-detector diffraction measurement schema is illustrated in
-\figref{F:diffraction_schema}.  For genearlity we utilize four
+\figref{F:diffraction_schema}.  For generality we utilize five
 fundamental coordinate systems:
 \begin{itemize}
   \item the {\bf laboratory} frame, \labframe;
+  \item the {\bf beam} frame, \beamframe;
   \item the {\bf detector} frame(s), $\detframe_i$;
   \item the {\bf sample} frame, \samframe; and
   \item the {\bf crystal} frame, \xtlframe.
@@ -235,12 +244,18 @@ fundamental coordinate systems:
 The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
 non-neglible physical extent in the lab frame, typically possessing a
-rectangular or circular cross-section.  The beam direction is
+rectangular or circular cross-section.  For clarity, we restricting our focus to sources that may be described using plane waves.  With regards to the geometric construction, we need only consider the unit incident wavevector, $\bhat\equiv\frac{\mbm{k}_i}{\|\mbm{k}_i\|}$The beam direction is
 represented by the unit vector \bhat, and the centroid of its
 cross-section is defined to coincide with the origin of \labframe,
 labeled \Pzero.
-\subsubsection{The Beam Frame}
-When working with diffraction geometry, it becomes very useful to associate detector-relative cartesian coordinates with a bragg angle, $2\theta$, and azimuth, $\eta$.  In the present notation, the bragg angle (see \eqnref{E:braggCondition}) is defined as
+\subsubsection{The Local Beam-Realtive Frame}
+When working with the geometry of diffraction, it becomes very useful to associate detector-relative cartesian coordinates -- and in turn unit diffraction vectors \dhat\ -- with a bragg angle, $2\theta$, and azimuth, $\eta$.  Noting that the Bragg condition is axisymmetric about the incident wavevector, a natural frame in which represent these spherical angles has the origin at the diffracting element and incident wavevector aligned with one of the basis vectors.  To define an azimuth, a second basis vector perpendicular to \bhat\ must be defined.  \beamframe.
+\begin{equation}
+  \left[ \ehat,\; -\bhat\times\ehat,\; -\bhat \right]
+  \label{E:etaFrame}
+\end{equation}
+
+In the present notation, the bragg angle (see \eqnref{E:braggCondition}) is defined as
 \begin{equation}
   2\theta \equiv \arccos{\left( \bhat \cdot \dhat \right)}
 \end{equation}
@@ -253,19 +268,28 @@ where \dhat\ is the unit vector along the diffracted beam
   \eta = \arccos{\left(\ehat \cdot \left( \eye - \bhat \otimes \bhat \right)\cdot\dhat\right)}
 \end{equation}
 
-The definition of a reference azimuth is arbitrary
-\begin{equation}
-  \left[ \ehat,\; -\bhat\times\ehat,\; -\bhat \right]
-  \label{E:etaFrame}
-\end{equation}
+The definition of a reference azimuth vector is arbitrary, however \ehat\ and \bhat\ cannot be collinear.  The standard setting has $\labcomps{\ehat}=\left[1\;0\;0\right]^T$.  The components of the beam direction vector $\bhat=\frac{\mbm{k}_i}{\|\mbm{k}_i\|}$ in the laboratory frame are parameterized by spherical angles $(\phi, \gamma)$:
 
 \begin{equation}
-  \begin{Bmatrix}
-    \cos\eta \cos\theta \\
-    \sin\eta \cos\theta \\
-    \sin\theta
-  \end{Bmatrix}
+  \labcomps{\bhat} = -\begin{Bmatrix}
+    \sin\phi \cos\gamma \\
+    \sin\phi \sin\gamma \\
+    \cos\phi
+  \end{Bmatrix}.
 \end{equation}
+The standard setting has $\phi=\gamma=0$.
+\begin{align}
+  \beamcomps{\ghat} &= \begin{Bmatrix}
+    \cos\theta \cos\eta \\
+    \cos\theta \sin\eta \\
+    \sin\theta
+  \end{Bmatrix}\\
+  \beamcomps{\dhat} &= \begin{Bmatrix}
+    \sin2\theta \cos\eta \\
+    \sin2\theta \sin\eta \\
+    -\cos2\theta
+  \end{Bmatrix}
+\end{align}
 
 \subsection{Detector Frame}\label{S:detector}
 A typical detector element has a planar active area with a rectangular
