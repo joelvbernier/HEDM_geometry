@@ -15,10 +15,10 @@ tth0 = 10*np.ones_like(eta0)
 chi  = [0, 1, 5, 10, 20, 30]
 
 lc = ['k', 'r', 'g', 'b', 'c', 'm', 'y']
-lt = [lc[i] + '.' for i in range(len(lc))]
+lt = [lc[i] + '-' for i in range(len(lc))]
 
-set11 = eta0 <= 90.
-set12 = eta0 >  90.
+set1 = eta0 <= 90.
+set2 = eta0 >  90.
 
 lw = 2
 fig1 = plt.figure(1); fig1.clf(); axes1 = fig1.gca()
@@ -28,20 +28,17 @@ for i in range(len(chi)):
                                     chiTilt=chi[i],
                                     units='degrees',
                                     convention='hexrd')
-    axes1.plot(d2r*eta0[set11], ome1[set11], lt[i],
-             label='$\chi$=%d$^\circ$' %chi[i], linewidth=lw)
-    axes1.plot(d2r*eta0[set12], ome1[set12], lt[i],
-             label='$\chi$=%d$^\circ$' %chi[i], linewidth=lw)
+    axes1.plot(d2r*eta0[set1], ome1[set1], lt[i],
+               label='$\chi$=%d$^\circ$' %chi[i], linewidth=lw)
+    axes1.plot(d2r*eta0[set2], ome1[set2], lt[i],
+               label='$\chi$=%d$^\circ$' %chi[i], linewidth=lw)
 
     #eta = np.pi - rot.angularDifference(d2r*eta0, eta1)
     eta =  rot.mapAngle(np.pi - (d2r*eta0 - eta1))
-    set1 = np.logical_and(eta0 <=   0., eta >= 0.)
-    set2 = np.logical_and(eta0 <=   0., eta <= 0.)
-    set3 = eta0 >= 0.
 
-    axes2.plot(d2r*eta0, eta, lt[i], linewidth=lw)    
-    #axes2.plot(d2r*eta0[set1], eta[set1], lt[i], linewidth=lw)
-    #axes2.plot(d2r*eta0[set2], eta[set2], lt[i], linewidth=lw)
+    #axes2.plot(d2r*eta0, eta, lt[i], linewidth=lw)    
+    axes2.plot(d2r*eta0[set1], eta[set1], lt[i], linewidth=lw)
+    axes2.plot(d2r*eta0[set2], eta[set2], lt[i], linewidth=lw)
     #axes2.plot(d2r*eta0[set3], eta[set3], lt[i], linewidth=lw)
 
 axes1.grid(True)
