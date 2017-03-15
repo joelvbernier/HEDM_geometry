@@ -243,19 +243,17 @@ fundamental coordinate systems:
 \subsection{Laboratory Frame}\label{S:laboratory}
 The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
-non-neglible physical extent in the lab frame, typically possessing a
+non-negligible physical extent in the lab frame, typically possessing a
 rectangular or circular cross-section.  For clarity, we restricting
 our focus to sources that may be described using plane waves.  With
-regards to the geometric construction, we need only consider the unit
-incident wavevector, $\bhat\equiv\frac{\mbm{k}_i}{\|\mbm{k}_i\|}$The
-beam direction is represented by the unit vector \bhat, and the
-centroid of its cross-section is defined to coincide with the origin
+regards to the geometric construction, it is useful to define the beam 
+direction as the unit incident wavevector, $\bhat\equiv\frac{\mbm{k}_i}{\|\mbm{k}_i\|}$.  
+The centroid of the beam cross-section is defined to coincide with the origin
 of \labframe, labeled \Pzero.
 
 \subsection{The Beam Frame}
 When working with the geometry of diffraction, it becomes very useful
-to associate detector-relative cartesian coordinates -- and in turn
-unit diffraction vectors \dhat\ -- with a bragg angle, $2\theta$, and
+to associate detector-relative cartesian coordinates -- and diffraction vectors \dhat\ -- with a bragg angle, $2\theta$, and
 azimuth, $\eta$.  Noting that the Bragg condition is axisymmetric
 about the incident wavevector, a natural frame in which represent
 these spherical angles has the origin at the diffracting element, and
@@ -265,17 +263,15 @@ as
 \begin{equation}
   2\theta \equiv \arccos{\left( \bhat \cdot \dhat \right)},
 \end{equation}
-where \dhat\ is the unit vector along the diffracted beam
+where \dhat\ is the unit vector representing the direction of the diffracted beam
 \begin{displaymath}
   \dhat \equiv \frac{\Pfour-\Pthree}{\|\Pfour-\Pthree\|}.
 \end{displaymath}
 To define an azimuth, a reference direction, \ehat, must be specified.
 The definition of a reference azimuth vector is arbitrary, however
 \ehat\ and \bhat\ cannot be collinear.  The standard setting has
-$\labcomps{\ehat}=\left[1\;0\;0\right]^T$.  The components of the beam
-direction vector $\bhat=\frac{\mbm{k}_i}{\|\mbm{k}_i\|}$ in the
-laboratory frame are parameterized by spherical angles $(\phi,
-\gamma)$:
+$\labcomps{\ehat}=\left[1\;0\;0\right]^T$.  The components \bhat\ in the
+laboratory frame are parameterized by spherical angles $(\phi, \gamma)$:
 \begin{equation}
   \labcomps{\bhat} = -\begin{Bmatrix}
     \sin\phi \cos\gamma \\
