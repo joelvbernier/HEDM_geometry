@@ -221,11 +221,11 @@ measurements with one or more planar detectors is presented.  It includes provis
 \mathbf{y}$.  Application to the rotation method, including the effects of non-perpendicularith of the rotation axis to the incident beam wavevector, is presented in detail.
 \end{abstract}
 
+\newpage
+
 \section{Background \& Motivation}
 
-With many different measurement schemes, the rise of 3DXRD and HEDM, multi-panel instruments.
-%
-Data reduction software, standardization
+With many different measurement schemes, the rise of HEDM, and multi-panel instruments, it bears merit to revisit a generic geometric model suitable for implementation in data reduction software... standardization, {\em blah, blah, blah}
 
 \section{Coordinate Systems}
 
@@ -358,12 +358,12 @@ vector $\mathbf{c}$, the components are transformed as
   \sampcomps{\mathbf{c}} &= \rmatc\cdot\cryscomps{\mathbf{c}} + \sampcomps{\tvecc}\\
   \labcomps{\mathbf{c}} &= \rmats\cdot\rmatc\cdot\cryscomps{\mathbf{c}} + \rmats\cdot\sampcomps{\tvecc} + \labcomps{\tvecs}
 \end{align}
-where $\tvecc=\Pthree-\Ptwo$.  The forumaltion of diffracted beam vectors for a given unit cell is discussed in \secref{S:diffraction}.
+where $\tvecc=\Pthree-\Ptwo$.  The formulation of diffracted beam vectors for a given unit cell is discussed in \secref{S:diffraction}.
 %%
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=\textwidth]{new_geometry.pdf}
-  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to cread the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour\ are shown.  The azimuthal angle, $\eta$, of \ghat\ about \bhat\ is not shown; however, the reference azimuth is, denoted by the unit vector \ehat. }
+  \includegraphics[width=0.85\textwidth]{new_geometry.pdf}
+  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to create the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour\ are shown.  The azimuthal angle, $\eta$, of \ghat\ about \bhat\ is not shown; however, the reference azimuth is, denoted by the unit vector \ehat. }
   \label{F:diffraction_schema}
 \end{figure}
 %%
@@ -424,7 +424,7 @@ analogously to the direct lattice parameters in \figref{F:lattice} and
 %%
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{unitCell.pdf}
+  \includegraphics[width=0.6\textwidth]{unitCell.pdf}
   \caption{The convention for describing the
     reference (read: unstrained) lattice has $\cella\parallel\Xc$ and
     $\rcellc\parallel\Zc$. Note that a triclinic
@@ -444,7 +444,7 @@ Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  Th
       & \dhat\cdot\Zd < 0,  \label{E:intersectsDetector}
 \end{align}
 $\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propagation direction.  \eqnref{E:braggCondition} is the bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an additional condition that must be satisfied in the instrument for \Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is, however, quite straightforward and not explicitly stated in this document.
-
+%
 \subsection{Representing crystal orientation and strain}
 A reciprocal lattice vector, \gvec, is typically representend by its components in the reference (read: undistorted) reciprocal lattice frame, $\rcpcomps{\gvec}=[h\; k\; l]$.  The change-of-basis matrix, \bmat, that takes components in the reciprocal lattice to \crysframe\ was given by \eqnref{E:bmatrix} above (\secref{S:conventions}).  The effects of both finite distortion and rotation of a crystal lattice with respect to \sampframe\ are captured using a deformation gradient tensor, \defgrad, as presented in \cite{Bernier:2011uq}.  The tensor \defgrad\ acts on the {\em direct} lattice vectors, and takes undistorted lattice vectors in the reference crystal frame, \crysframe, to reoriented and distorted lattice vectors in the sample frame, \sampframe.  Using the polar decomposition, 
 \begin{equation}
@@ -554,7 +554,44 @@ The complete procedure for finding the detector coordinates of all reflections f
 \item Calculate $\detcomps{\Pfour}$ from \eqnref{E:Pfour}.
 \end{enumerate}
 
- 
+\begin{appendix}
+\section{Tilt parameterization}
+\subsection{Tait-Bryan angles}
+Passive convention.
+\begin{align}
+\rmatd &= \rmat{\zeta}{\Zl}\rmat{\psi}{\Yl}\rmat{\phi}{\Xl} \label{E:rmatd} \\
+	&= 	\begin{bmatrix} 
+			\cos{\zeta} & -\sin{\zeta} &  0  \\
+			\sin{\zeta} &  \cos{\zeta} &  0  \\
+			 0  &  0  &  1 
+		\end{bmatrix}
+		\begin{bmatrix} 
+			\cos{\psi} &  0  & \sin{\psi} \\
+			 0  &  1  &  0  \\
+			-\sin{\psi} &  0  & \cos{\psi}
+		\end{bmatrix}
+		\begin{bmatrix} 
+			 1  &  0  &  0  \\
+			 0  & \cos{\phi} & -\sin{\phi} \\
+			 0  & \sin{\phi} & \cos{\phi}
+		\end{bmatrix} \nonumber\\
+	&= 	\begin{bmatrix} 
+			\cos{\zeta} & -\sin{\zeta} &  0  \\
+			\sin{\zeta} &  \cos{\zeta} &  0  \\
+			 0  &  0  &  1 
+		\end{bmatrix}
+		\begin{bmatrix} 
+			\cos{\psi} &  \sin{\psi}\sin{\phi}  & \sin{\psi}\cos{\phi} \\
+			 0  &  \cos{\phi}  &  -\sin{\phi}  \\
+			-\sin{\psi} &  \cos{\psi}\sin{\phi}  & \cos{\psi}\cos{\phi}
+		\end{bmatrix} \nonumber\\
+	&= \begin{bmatrix} 
+			\cos{\zeta}\cos{\psi} & \cos{\zeta}\sin{\psi}\sin{\phi} - \sin{\zeta}\cos{\phi} & \cos{\zeta}\sin{\psi}\cos{\phi} + \sin{\zeta}\sin{\phi} \\
+			\sin{\zeta}\cos{\psi} & \sin{\zeta}\sin{\psi}\sin{\phi} + \cos{\zeta}\cos{\phi} & \sin{\zeta}\sin{\psi}\cos{\phi} - \cos{\zeta}\sin{\phi} \\
+			-\sin{\psi} & \cos{\psi}\sin{\phi} & \cos{\psi}\cos{\phi}
+		\end{bmatrix} \nonumber
+\end{align}
+\end{appendix} 
 \bibliographystyle{abbrvnat}
 \bibliography{hedm}
 
