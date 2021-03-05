@@ -26,9 +26,9 @@ def p2 (p1) + [bvec]
 def p3 (p1) + [avec] + [bvec]
 def p4 (p1) + [avec]
 def p5 (p1) + [cvec]
-def p6 (p1) + [bvec] + [cvec] 
-def p7 (p1) + [avec] + [bvec] + [cvec] 
-def p8 (p1) + [avec] + [cvec] 
+def p6 (p1) + [bvec] + [cvec]
+def p7 (p1) + [avec] + [bvec] + [cvec]
+def p8 (p1) + [avec] + [cvec]
 
 def axlen 4
 def axlen2 0.33*axlen
@@ -61,7 +61,7 @@ def cptp (delc*axlen*cos(beta), -delc*axlen*cosalphar*sin(beta), delc*axlen*sina
 % faces of the unit cell.
 def unitCell{
     %% def cellopts [linestyle=solid,linecolor=black,fillcolor=lightgray,opacity=0.1,cull=false]
-    %% 
+    %%
     %% polygon[cellopts](p1)(p2)(p3)(p4) % bottom
     %% polygon[cellopts](p4)(p3)(p7)(p8) % a front
     %% polygon[cellopts](p2)(p6)(p7)(p3) % b front
@@ -82,10 +82,10 @@ def unitCell{
     line[cellopts] (p7)(p8)
     line[cellopts] (p8)(p5)
     }
-% 
+%
 % def hexCell{
 %     def cellopts [fillstyle=solid,linestyle=dashed,fillcolor=lightgray,linecolor=black]
-% 
+%
 %     polygon[cellopts](p1)(p2)(p3)(p4) % bottom
 %     polygon[cellopts](p4)(p3)(p7)(p8) % a front
 %     polygon[cellopts](p2)(p6)(p7)(p3) % b front
@@ -101,7 +101,7 @@ def crysCS{
     %% def astretch (p1) + scl*a*unit([avec])
     %% def bstretch (p1) + scl*b*unit([bvec])
     %% def cstretch (p1) + scl*c*unit([cvec])
-    %% 
+    %%
     %% line[linecolor=red,linewidth=3pt,arrows=->] (p1)(astretch)
     %% line[linecolor=blue,linewidth=3pt,arrows=->] (p1)(bstretch)
     %% line[linecolor=green,linewidth=3pt,arrows=->] (p1)(cstretch)
@@ -185,7 +185,7 @@ def setup{
 put { view((1,1,1), (-1,-1,-1)) } { {setup} }
 
 % def myView{
-% put {view((1, 1, 1))}{setup} 
+% put {view((1, 1, 1))}{setup}
 % }
-% 
-% put {scale(1.5)}{myView} 
+%
+% put {scale(1.5)}{myView}

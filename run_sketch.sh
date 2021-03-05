@@ -1,5 +1,7 @@
-cd /Users/bernier2/github/HEDM_geometry
-sketch -o /Users/bernier2/github/HEDM_geometry/new_geometry.sk.out /Users/bernier2/github/HEDM_geometry/new_geometry.sk
-latex /Users/bernier2/github/HEDM_geometry/new_geometry.tex
-dvips -o /Users/bernier2/github/HEDM_geometry/new_geometry.ps /Users/bernier2/github/HEDM_geometry/new_geometry.dvi
-dvipdf /Users/bernier2/github/HEDM_geometry/new_geometry.dvi /Users/bernier2/github/HEDM_geometry/new_geometry.pdf
+
+cd /Users/joel/Documents/GitHub/geometry_doc
+sketch -o /Users/joel/Documents/GitHub/geometry_doc/new_geometry.sk.out /Users/joel/Documents/GitHub/geometry_doc/new_geometry.sk
+latex /Users/joel/Documents/GitHub/geometry_doc/new_geometry.tex
+dvips -o /Users/joel/Documents/GitHub/geometry_doc/new_geometry.ps /Users/joel/Documents/GitHub/geometry_doc/new_geometry.dvi
+dvipdf /Users/joel/Documents/GitHub/geometry_doc/new_geometry.dvi /Users/joel/Documents/GitHub/geometry_doc/new_geometry.pdf
+

@@ -37,6 +37,7 @@
 \newcommand{\rmatd}{\ensuremath{\mathsf{R}_d}}
 \newcommand{\rmats}{\ensuremath{\mathsf{R}_s}}
 \newcommand{\rmatc}{\ensuremath{\mathsf{R}_c}}
+\newcommand{\amat}{\ensuremath{\mathsf{A}}}
 \newcommand{\bmat}{\ensuremath{\mathsf{B}}}
 \newcommand{\gvec}{\ensuremath{\mbm{\mathrm{G}}}}
 \newcommand{\ghat}{\ensuremath{\hat{\mbm{\mathrm{G}}}}}
@@ -217,8 +218,8 @@
 \maketitle
 \begin{abstract}
 A complete and general geometric model for parameterizing diffraction
-measurements with one or more planar detectors is presented.  It includes provisions for describing both mono- and poly-chromatic schemes for {\em collimated} incident beams (\ie\ negligable beam divergence), although extensions to divergent sources are discussed.  Detectors are modeled as polygonal planar bodies, and their shapes and placements in the reference frame are completely arbitrary.  The mapping that takes an admissable reciprocal lattice vector in the crystal frame to pixel coordinates in a specific detector frame is of the form $\mathbf{A}(\mathbf{x})\cdot\mathbf{x} =
-\mathbf{y}$.  Application to the rotation method, including the effects of non-perpendicularith of the rotation axis to the incident beam wavevector, is presented in detail.
+measurements with one or more planar detectors is presented.  It includes provisions for describing both mono- and poly-chromatic schemes for {\em collimated} incident beams (\ie\ negligible beam divergence), although extensions to divergent sources are discussed.  Detectors are modeled as polygonal planar bodies, and their shapes and placements in the reference frame are completely arbitrary.  The mapping that takes an admissible reciprocal lattice vector in the crystal frame to pixel coordinates in a specific detector frame is of the form $\mathbf{A}(\mathbf{x})\cdot\mathbf{x} =
+\mathbf{y}$.  Application to the rotation method, including the effects of non-perpendicularity of the rotation axis to the incident beam wave vector, is presented in detail.
 \end{abstract}
 
 \newpage
@@ -243,35 +244,39 @@ fundamental coordinate systems:
 \subsection{Laboratory Frame}\label{S:laboratory}
 The laboratory frame is intended to provide a global reference frame
 that is stationary during the measurement.  The incident beam has a
-non-negligible physical extent in the lab frame, typically possessing a
-rectangular or circular cross-section.  For clarity, we restricting
+non-negligible physical extent in the lab frame, typically possessing
+a rectangular or circular cross-section.  For clarity, we restricting
 our focus to sources that may be described using plane waves.  With
-regards to the geometric construction, it is useful to define the beam 
-direction as the unit incident wavevector, $\bhat\equiv\frac{\mbm{k}_i}{\|\mbm{k}_i\|}$.  
-The centroid of the beam cross-section is defined to coincide with the origin
-of \labframe, labeled \Pzero.
+regards to the geometric construction, it is useful to define the beam
+direction as the unit incident wave vector,
+$\bhat\equiv\frac{\mbm{k}_i}{\|\mbm{k}_i\|}$.  The centroid of the
+beam cross-section is defined to coincide with the origin of
+\labframe, labeled \Pzero.
 
 \subsection{The Beam Frame}
 When working with the geometry of diffraction, it becomes very useful
-to associate detector-relative cartesian coordinates -- and diffraction vectors \dhat\ -- with a bragg angle, $2\theta$, and
+to associate detector-relative cartesian coordinates -- and
+diffraction vectors \dhat\ -- with a Bragg angle, $2\theta$, and
 azimuth, $\eta$.  Noting that the Bragg condition is axisymmetric
-about the incident wavevector, a natural frame in which represent
+about the incident wave vector, a natural frame in which represent
 these spherical angles has the origin at the diffracting element, and
 incident beam aligned with one of the basis vectors.  In the present
-notation, the bragg angle (see \eqnref{E:braggCondition}) is defined
+notation, the Bragg angle (see \eqnref{E:braggCondition}) is defined
 as
 \begin{equation}
   2\theta \equiv \arccos{\left( \bhat \cdot \dhat \right)},
 \end{equation}
-where \dhat\ is the unit vector representing the direction of the diffracted beam
+where \dhat\ is the unit vector representing the direction of the
+diffracted beam
 \begin{displaymath}
   \dhat \equiv \frac{\Pfour-\Pthree}{\|\Pfour-\Pthree\|}.
 \end{displaymath}
 To define an azimuth, a reference direction, \ehat, must be specified.
 The definition of a reference azimuth vector is arbitrary, however
 \ehat\ and \bhat\ cannot be collinear.  The standard setting has
-$\labcomps{\ehat}=\left[1\;0\;0\right]^T$.  The components \bhat\ in the
-laboratory frame are parameterized by spherical angles $(\phi, \gamma)$:
+$\labcomps{\ehat}=\left[1\;0\;0\right]^T$.  The components \bhat\ in
+the laboratory frame are parameterized by spherical angles $(\phi,
+\gamma)$:
 \begin{equation}
   \labcomps{\bhat} = -\begin{Bmatrix}
     \sin\phi \cos\gamma \\
@@ -297,7 +302,8 @@ and the azimuth of a diffracted beam is obtained as
 \begin{equation}
   \eta = \arccos{\left(\ehat \cdot \left( \eye - \bhat \otimes \bhat \right)\cdot\dhat\right)}.
 \end{equation}
-Lastly, the components of a reciprocal lattice vector, \gvec, are simply
+Lastly, the components of a reciprocal lattice vector, \gvec, are
+simply
 \begin{equation}
   \beamcomps{\gvec} = \frac{2\sin{\theta}}{\lambda}\begin{Bmatrix}
     \cos\eta \cos\theta \\
@@ -315,8 +321,8 @@ cartesian coordinate system \detframe\ is attached to each independent
 detector element as follows: the origin \Pone\ is coincident with the
 centroid of the active surface, and \Zd\ represents the plane normal.
 The \Xd,\Yd\ directions are typically aligned with the horizontal and
-vertical pixel-relative directions on each panel.  The coordinates of points 
-in each independent detector coordinate system, \detframe\, are
+vertical pixel-relative directions on each panel.  The coordinates of
+points in each independent detector coordinate system, \detframe\, are
 related to coordinated in \labframe\ via a simple affine
 transformation:
 \begin{gather}
@@ -363,7 +369,15 @@ where $\tvecc=\Pthree-\Ptwo$.  The formulation of diffracted beam vectors for a 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=0.85\textwidth]{new_geometry.pdf}
-  \caption{A single-detector diffraction schema illustrating the four fundamental coordinate systems and the 5 generic points \Pzero-\Pfour\ used to create the transfer function taking reciprocal lattice vector components to detector-relative components.  For completeness, the reciprocal lattice vector \gvec\ and bragg angle $2\theta$ associated with \Pfour\ are shown.  The azimuthal angle, $\eta$, of \ghat\ about \bhat\ is not shown; however, the reference azimuth is, denoted by the unit vector \ehat. }
+  \caption{A single-detector diffraction schema illustrating the four
+    fundamental coordinate systems and the 5 generic points
+    \Pzero-\Pfour\ used to create the transfer function taking
+    reciprocal lattice vector components to detector-relative
+    components.  For completeness, the reciprocal lattice vector
+    \gvec\ and Bragg angle $2\theta$ associated with \Pfour\ are
+    shown.  The azimuthal angle, $\eta$, of \ghat\ about \bhat\ is not
+    shown; however, the reference azimuth is, denoted by the unit
+    vector \ehat. }
   \label{F:diffraction_schema}
 \end{figure}
 %%
@@ -371,10 +385,12 @@ where $\tvecc=\Pthree-\Ptwo$.  The formulation of diffracted beam vectors for a 
 \newpage
 \section{Diffraction}\label{S:diffraction}
 \subsection{Convention for writing components of crystal lattice vectors}\label{S:conventions}
-In order to insert the geometry of diffraction into the coordinate system hierarchy described above, it is necessary to etablish a convention for describing the crystal lattice. The crystal lattice itself may be
-parameterized by its primitive vectors \cella, \cellb, and \cellc.
-They share a common origin at a lattice site and are subject to the
-following conditions:
+In order to insert the geometry of diffraction into the coordinate
+system hierarchy described above, it is necessary to etablish a
+convention for describing the crystal lattice. The crystal lattice
+itself may be parameterized by its primitive vectors \cella, \cellb,
+and \cellc.  They share a common origin at a lattice site and are
+subject to the following conditions:
 %%
 \begin{equation}
   \begin{array}{rcl}
@@ -386,43 +402,23 @@ following conditions:
     {1 \over ab}\dotp{\cella}{\cellb} &=& \cos\dgama
   \end{array} \label{E:lattParams}
 \end{equation}
-%% 
-The six scalar cell parameters \cellParams\ represent a convenient parameterization of the reference unit cell, which typically correspond to an unloaded state at a reference temperature. Crystal symmetry operations (excluding triclinic) generate equivalences among cell parameters; however once a crystal is deformed, the reference symmetry is broken and all six parameters must be considered as independent.  The treatment of strained crystals in the context of the reference crystal symmetry is discussed in detail below.  For writing components of crystal-relative vectors and tensors in \crysframe, 
-a convention must be chosen to register the lattice vectors.  The
+%%
+The six scalar cell parameters \cellParams\ represent a convenient
+parameterization of the reference unit cell, which typically
+correspond to an unloaded state at a reference temperature. Crystal
+symmetry operations (excluding triclinic) generate equivalences among
+cell parameters; however once a crystal is deformed, the reference
+symmetry is broken and all six parameters must be considered as
+independent.  The treatment of strained crystals in the context of the
+reference crystal symmetry is discussed in detail below.  For writing
+components of crystal-relative vectors and tensors in \crysframe, a
+convention must be chosen to register the lattice vectors.  The
 convention employed herein is consistent with that proposed by
 \cite{Nye:crysBookAppB}.  Explicitly stated, $\cella\parallel\Xc$ and
 $(\crossp{\cella}{\cellb})\parallel\Zc$, as depicted in
 \figref{F:lattice}.
-
-The reciprocal lattice, which forms a dual basis to the direct
-lattice, is a very useful concept in diffraction.  The reciprocal lattice vectors are
-defined\footnote{this is the so-called ``crystallographer's
-convention'' where the prefactor of $2\pi$ is omitted.} as follows:
 %%
-\begin{align}
-  \rcella = {1 \over v}\crossp{\cellb}{\cellc}\\
-  \rcellb = {1 \over v}\crossp{\cellc}{\cella}\\
-  \rcellc = {1 \over v}\crossp{\cella}{\cellb}
-\end{align}
-%%
-where $\cellVol = \cellVolExpr$ represents the volume of the primitive
-cell.  The change-of-basis matrix, \bmat, that takes vector components in the
-reciprocal lattice frame to the crystal frame is formulated as
-%%
-\begin{align}
-  \bmat &= \cryscomps{\begin{matrix} \rcella & \rcellb & \rcellc \end{matrix}} \label{E:bmatrix}\\ 
-        &= \frac{1}{\cellVol}\begin{bmatrix}
-           bc\sin{\ralfa}\sin{\dbeta}\sin{\dgama} &                          0 &                                           0 \\
-          -bc\sin{\ralfa}\sin{\dbeta}\cos{\dgama} & ac\sin{\ralfa}\sin{\dbeta} &                                           0 \\
-          -bc(\cos{\ralfa}\sin{\dbeta}\cos{\dgama} + \cos{\dbeta}\sin{\dgama}) & ac\cos{\ralfa}\sin{\dbeta} & ab\sin{\dgama}
-	\end{bmatrix}, \nonumber
-\end{align}
-%%
-where \rcellParams\ are the reciprocal lattice parameters defined
-analogously to the direct lattice parameters in \figref{F:lattice} and
-\eqnref{E:lattParams}.
-%%
-\begin{figure}
+\begin{figure}[ht]
   \centering
   \includegraphics[width=0.6\textwidth]{unitCell.pdf}
   \caption{The convention for describing the
@@ -435,7 +431,51 @@ analogously to the direct lattice parameters in \figref{F:lattice} and
 \end{figure}
 %%
 
-Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  The unit vector aligned with its associated diffracted beam, \dhat, is then
+The reciprocal lattice, which forms a dual basis to the direct
+lattice, is a very useful concept in diffraction.  The reciprocal
+lattice vectors are defined\footnote{this is the so-called
+``crystallographer's convention'' where the prefactor of $2\pi$ is
+omitted.} as follows:
+%%
+\begin{align}
+  \rcella = {1 \over v}\crossp{\cellb}{\cellc}\\
+  \rcellb = {1 \over v}\crossp{\cellc}{\cella}\\
+  \rcellc = {1 \over v}\crossp{\cella}{\cellb}
+\end{align}
+%%
+where $\cellVol = \cellVolExpr$ represents the volume of the primitive
+cell, and \rcellParams\ are the reciprocal lattice parameters defined
+analogously to the direct lattice parameters in \figref{F:lattice} and
+\eqnref{E:lattParams}.  With \crysframe\ define with reference to
+\cellParams\ and \rcellParams, we define the change-of-basis matrix,
+\amat, which takes components in the direct lattice frame to the
+\crysframe as
+%%
+\begin{align}
+  \amat &\equiv \cryscomps{\cella\;\cellb\;\cellc} \label{E:amatrix}\\
+        &= \begin{bmatrix}
+              a & b\cos{\gamma} & c\cos{\beta} \\
+              0 & b\sin{\gamma} & -c\cos{\alpha^*}\sin{\beta} \\
+              0 & 0 & c\sin{\alpha^*}\sin{\beta}
+           \end{bmatrix}. \nonumber
+\end{align}
+%%
+Note that an identity from \citet{Neustadt:a05876} is employed to
+simplify the components for \amat.  Analogously the change-of-basis
+matrix, \bmat, that takes vector components in the reciprocal lattice
+frame to the crystal frame is defined as
+%%
+\begin{align}
+  \bmat &\equiv \cryscomps{\begin{matrix} \rcella & \rcellb & \rcellc \end{matrix}} \label{E:bmatrix}\\ 
+        &= \frac{1}{\cellVol}\begin{bmatrix}
+           bc\sin{\ralfa}\sin{\dbeta}\sin{\dgama} &                          0 &                                           0 \\
+          -bc\sin{\ralfa}\sin{\dbeta}\cos{\dgama} & ac\sin{\ralfa}\sin{\dbeta} &                                           0 \\
+          -bc(\cos{\ralfa}\sin{\dbeta}\cos{\dgama} + \cos{\dbeta}\sin{\dgama}) & ac\cos{\ralfa}\sin{\dbeta} & ab\sin{\dgama}
+	\end{bmatrix}, \nonumber
+\end{align}
+%%
+
+Assume that a reciprocal lattice vector, \gvec, satisfies a Bragg condition.  The unit vector aligned with its associated diffracted beam, \dhat, is then
 \begin{align}
 \dhat &= \mathsf{R}\left(\pi, \ghat\right)\cdot\left(-\bhat\right) \nonumber\\
       &= \left(2\ghat\otimes\ghat - \eye\right)\cdot\left(-\bhat\right) \nonumber\\
@@ -443,7 +483,7 @@ Assume that a reciprocal lattice vector, \gvec, satisfies a bragg condition.  Th
       & \mbox{where } \ghat\cdot\bhat = -\frac{\lambda}{2}\|\gvec\| = -\sin{\theta},  \label{E:braggCondition}\\
       & \dhat\cdot\Zd < 0,  \label{E:intersectsDetector}
 \end{align}
-$\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propagation direction.  \eqnref{E:braggCondition} is the bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an additional condition that must be satisfied in the instrument for \Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is, however, quite straightforward and not explicitly stated in this document.
+$\ghat=\gvec / \|\gvec\|$, and \bhat\ is the unit vector aligned with the beam propagation direction.  \eqnref{E:braggCondition} is the Bragg condition for \xrays\ having wavelength $\lambda$, and \eqnref{E:intersectsDetector} is the geometric condition ensuring that \dhat\ can intersect the detector plane.  Note that there is an additional condition that must be satisfied in the instrument for \Pfour\ to be observable; it must also lie within the physical extent of the detector element.  Application of this condition is, however, quite straightforward and not explicitly stated in this document.
 %
 \subsection{Representing crystal orientation and strain}
 A reciprocal lattice vector, \gvec, is typically representend by its components in the reference (read: undistorted) reciprocal lattice frame, $\rcpcomps{\gvec}=[h\; k\; l]$.  The change-of-basis matrix, \bmat, that takes components in the reciprocal lattice to \crysframe\ was given by \eqnref{E:bmatrix} above (\secref{S:conventions}).  The effects of both finite distortion and rotation of a crystal lattice with respect to \sampframe\ are captured using a deformation gradient tensor, \defgrad, as presented in \cite{Bernier:2011uq}.  The tensor \defgrad\ acts on the {\em direct} lattice vectors, and takes undistorted lattice vectors in the reference crystal frame, \crysframe, to reoriented and distorted lattice vectors in the sample frame, \sampframe.  Using the polar decomposition, 
@@ -519,7 +559,7 @@ From \eqnref{E:gvecLab} we have
 \begin{equation}
     \sampcomps{\gvec} = \sampcomps{\defgrad^{-T}}\bmat\rcpcomps{\gvec} \label{E:ghatInSamp}
 \end{equation}
-By writing the bragg condition (\eqnref{E:braggCondition}) in terms of lab-frame components by multiplying by the normalized components $\sampcomps{\ghat}$ above by \rmats\ leads to relation of the form 
+By writing the Bragg condition (\eqnref{E:braggCondition}) in terms of lab-frame components by multiplying by the normalized components $\sampcomps{\ghat}$ above by \rmats\ leads to relation of the form 
 \begin{align}
     a \siw + b \cow &= c \label{E:trig}\\
                     &\equiv R\sin{\left(x+\alpha\right)} \label{E:identity}\\
